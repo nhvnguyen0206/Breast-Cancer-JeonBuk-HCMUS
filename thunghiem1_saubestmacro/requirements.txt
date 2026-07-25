@@ -1,0 +1,11 @@
+coral-pytorch==1.4.0
+matplotlib>=3.10
+numpy>=2.0
+opencv-python>=4.10
+pandas>=2.0
+Pillow>=10.0
+PyYAML>=6.0
+scikit-learn>=1.5
+seaborn>=0.13
+torch>=2.5
+torchvision>=0.20

@@ -1,0 +1,40 @@
+experiment:
+  id: V2_512
+  name: synchronized_preprocessing_512
+  seed: 42
+  deterministic: true
+data:
+  train:
+    tn_manifest: /mnt/hcmus/breast_vn/code/new_implement/manifests/phaseg_tn_train411.csv
+    vindr_manifest: /mnt/hcmus/breast_vn/code/new_implement/manifests/phaseg_vindr_train3975.csv
+  validation:
+    manifest: /mnt/hcmus/breast_vn/code/new_implement/manifests/phaseg_tn_valid133.csv
+  image_size: 512
+  tn_domain_ratio: 0.6
+  preprocessing:
+    crop_breast: true
+    normalize_orientation: true
+    rotation_degrees: 5.0
+    translate_fraction: 0.03
+    gamma_range: [0.9, 1.1]
+    contrast_range: [0.9, 1.1]
+    noise_std: 0.01
+model:
+  backbone: densenet121
+  fusion: mean
+  use_ordinal_head: true
+  imagenet_init: false
+  initialization_checkpoint: /mnt/hcmus/breast_vn/code/new_implement/outputs/E0_phaseg_reproduction_seed42_20260718_163950/best_checkpoint.pt
+loss:
+  flat: {name: class_balanced_focal, gamma: 2.0, beta: 0.99}
+  lambda_ordinal: 0.5
+training:
+  batch_size: 1
+  epochs: 50
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  early_stopping_patience: 10
+  num_workers: 4
+  amp: true
+  sampler_num_samples: 4386
+  scheduler: {name: step_lr, step_size: 5, gamma: 0.5}
