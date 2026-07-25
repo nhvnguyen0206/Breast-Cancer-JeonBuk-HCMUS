@@ -1,0 +1,17 @@
+{
+  "R3_MoE": {
+    "C": 10.0,
+    "threshold": 0.55
+  },
+  "R4_DES": {
+    "neighbors": 60,
+    "advantage": 0.0
+  },
+  "R5_Stacking": {
+    "C": 0.01
+  },
+  "R6_Selective": {
+    "min_specialist_margin": 0.05,
+    "max_base_cd_margin": 1.0
+  }
+}
