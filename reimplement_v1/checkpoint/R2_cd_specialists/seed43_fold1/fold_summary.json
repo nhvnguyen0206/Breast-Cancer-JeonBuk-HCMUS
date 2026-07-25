@@ -1,0 +1,220 @@
+{
+  "seed": 43,
+  "fold": 1,
+  "inner_valid_count": 66,
+  "outer_eval_count": 109,
+  "inner_cd_samples": 51,
+  "inner_c_samples": 28,
+  "inner_d_samples": 23,
+  "selected_parameters": {
+    "C": 0.1,
+    "class_weight": null,
+    "threshold": 0.5
+  },
+  "inner_baseline_metrics": {
+    "num_samples": 66,
+    "accuracy": 0.696969696969697,
+    "balanced_accuracy": 0.5609173435260392,
+    "macro_f1": 0.5474643874643874,
+    "weighted_f1": 0.6834118967452302,
+    "qwk": 0.6695278969957081,
+    "per_class_recall": {
+      "A": 0.0,
+      "B": 0.8461538461538461,
+      "C": 0.5714285714285714,
+      "D": 0.8260869565217391
+    },
+    "per_class_f1": {
+      "A": 0.0,
+      "B": 0.8461538461538461,
+      "C": 0.64,
+      "D": 0.7037037037037037
+    },
+    "confusion_matrix": [
+      [
+        0,
+        1,
+        0,
+        1
+      ],
+      [
+        0,
+        11,
+        2,
+        0
+      ],
+      [
+        0,
+        1,
+        16,
+        11
+      ],
+      [
+        0,
+        0,
+        4,
+        19
+      ]
+    ],
+    "c_to_d": 11,
+    "d_to_c": 4,
+    "cd_error_count": 15,
+    "severe_error_count": 1,
+    "within_one": 0.9848484848484849
+  },
+  "inner_selected_metrics": {
+    "num_samples": 66,
+    "accuracy": 0.7575757575757576,
+    "balanced_accuracy": 0.594690635451505,
+    "macro_f1": 0.5872383495563787,
+    "weighted_f1": 0.7461909124843055,
+    "qwk": 0.759493670886076,
+    "per_class_recall": {
+      "A": 0.0,
+      "B": 0.8461538461538461,
+      "C": 0.75,
+      "D": 0.782608695652174
+    },
+    "per_class_f1": {
+      "A": 0.0,
+      "B": 0.8461538461538461,
+      "C": 0.7368421052631579,
+      "D": 0.7659574468085106
+    },
+    "confusion_matrix": [
+      [
+        0,
+        1,
+        1,
+        0
+      ],
+      [
+        0,
+        11,
+        2,
+        0
+      ],
+      [
+        0,
+        1,
+        21,
+        6
+      ],
+      [
+        0,
+        0,
+        5,
+        18
+      ]
+    ],
+    "c_to_d": 6,
+    "d_to_c": 5,
+    "cd_error_count": 11,
+    "severe_error_count": 1,
+    "within_one": 0.9848484848484849
+  },
+  "outer_baseline_metrics": {
+    "num_samples": 109,
+    "accuracy": 0.5779816513761468,
+    "balanced_accuracy": 0.4806968477181244,
+    "macro_f1": 0.43722769133058115,
+    "weighted_f1": 0.5355736639853631,
+    "qwk": 0.688007477072259,
+    "per_class_recall": {
+      "A": 0.0,
+      "B": 0.7272727272727273,
+      "C": 0.2765957446808511,
+      "D": 0.918918918918919
+    },
+    "per_class_f1": {
+      "A": 0.0,
+      "B": 0.6808510638297872,
+      "C": 0.3880597014925373,
+      "D": 0.68
+    },
+    "confusion_matrix": [
+      [
+        0,
+        3,
+        0,
+        0
+      ],
+      [
+        1,
+        16,
+        4,
+        1
+      ],
+      [
+        0,
+        6,
+        13,
+        28
+      ],
+      [
+        0,
+        0,
+        3,
+        34
+      ]
+    ],
+    "c_to_d": 28,
+    "d_to_c": 3,
+    "cd_error_count": 31,
+    "severe_error_count": 1,
+    "within_one": 0.9908256880733946
+  },
+  "outer_specialist_metrics": {
+    "num_samples": 109,
+    "accuracy": 0.5963302752293578,
+    "balanced_accuracy": 0.47408385174342627,
+    "macro_f1": 0.46402270492867614,
+    "weighted_f1": 0.5896242750908302,
+    "qwk": 0.6527485935064055,
+    "per_class_recall": {
+      "A": 0.0,
+      "B": 0.7272727272727273,
+      "C": 0.574468085106383,
+      "D": 0.5945945945945946
+    },
+    "per_class_f1": {
+      "A": 0.0,
+      "B": 0.6808510638297872,
+      "C": 0.5806451612903226,
+      "D": 0.5945945945945946
+    },
+    "confusion_matrix": [
+      [
+        0,
+        3,
+        0,
+        0
+      ],
+      [
+        1,
+        16,
+        4,
+        1
+      ],
+      [
+        0,
+        6,
+        27,
+        14
+      ],
+      [
+        0,
+        0,
+        15,
+        22
+      ]
+    ],
+    "c_to_d": 14,
+    "d_to_c": 15,
+    "cd_error_count": 29,
+    "severe_error_count": 1,
+    "within_one": 0.9908256880733946
+  },
+  "outer_delta_macro_f1": 0.026795013598094997,
+  "locked_test_used": false
+}
