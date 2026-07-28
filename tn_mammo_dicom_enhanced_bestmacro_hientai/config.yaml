@@ -1,0 +1,49 @@
+experiment:
+  id: DICOM_E3_enhanced
+  name: dicom_bilateral_neighbor_penalty_512
+  seed: 42
+data:
+  dicom_root: /mnt/hcmus/breast_vn/data/TNMammo/data_tn_mammo_dicom
+  train:
+    tn_manifest: /mnt/hcmus/breast_vn/code/phase2.2/antigavity_dicom_create/manifests/dicom_tn_train411.csv
+  validation:
+    manifest: /mnt/hcmus/breast_vn/code/phase2.2/antigavity_dicom_create/manifests/dicom_tn_valid133.csv
+  view_order:
+  - L_CC
+  - L_MLO
+  - R_CC
+  - R_MLO
+  image_size: 512
+model:
+  backbone: densenet121
+  # Bilateral fusion: ipsilateral gated relational + bilateral relational
+  # Much richer feature extraction than simple mean fusion
+  fusion: bilateral
+  use_ordinal_head: true
+  use_binary_head: true
+  imagenet_init: true
+  # No initialization checkpoint - train from ImageNet weights directly
+loss:
+  flat:
+    name: class_balanced_focal
+    gamma: 2.0
+    beta: 0.999
+  lambda_ordinal: 0.5
+  lambda_binary: 0.3
+  # Neighbor penalty: penalizes C<->D confusion with cost matrix
+  lambda_neighbor_penalty: 0.2
+training:
+  batch_size: 2
+  epochs: 50
+  learning_rate: 0.00005
+  weight_decay: 0.0001
+  primary_metric: macro_f1
+  early_stopping_patience: 15
+  num_workers: 4
+  prefetch_factor: 2
+  amp: true
+  gradient_clip_norm: 5.0
+  scheduler:
+    name: cosine
+    T_max: 50
+    eta_min: 0.000001
