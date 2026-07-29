@@ -1,0 +1,28 @@
+experiment:
+  id: TN_MAMMO_DICOM_ENSEMBLE_SOTA
+  name: tn_mammo_dicom_ensemble_sota_0.7384
+  description: "Ensemble of E3 (DenseNet121 @ 512x512) and E7 (ConvNeXt-Tiny @ 1024x1024 + Safe TTA)"
+  seed: 42
+
+ensemble:
+  weights:
+    e3: 0.5
+    e7: 0.5
+  checkpoints:
+    e3: checkpoint/e3_densenet512_best.pt
+    e7: checkpoint/e7_convnext1024_best.pt
+
+data:
+  input_mode: dicom
+  dicom_root: /mnt/hcmus/breast_vn/data/TNMammo/data_tn_mammo_dicom
+  test_manifest: /mnt/hcmus/breast_vn/code/phase2.2/antigavity_dicom_create/manifests/dicom_tn_test132.csv
+  view_order:
+  - L_CC
+  - L_MLO
+  - R_CC
+  - R_MLO
+
+metrics:
+  target_macro_f1: 0.7384
+  target_accuracy: 0.7273
+  target_qwk: 0.7665
