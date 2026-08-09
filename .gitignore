@@ -26,6 +26,7 @@ outputs_phaseA/
 checkpoints/
 *.pth
 *.pt
+!tn-mammo-region1/checkpoint/*.pt
 *.ckpt
 *.h5
 *.pkl

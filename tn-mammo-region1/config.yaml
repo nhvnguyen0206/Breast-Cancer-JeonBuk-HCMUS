@@ -1,0 +1,31 @@
+# TN-Mammo Region1 Master Configuration
+
+ensemble:
+  e3_models:
+    backbone: densenet121
+    image_size: 512
+    region_contralateral: true
+    weight: 0.10
+    checkpoints:
+      - checkpoint/e3_region_seed42.pt
+      - checkpoint/e3_region_seed43.pt
+      - checkpoint/e3_region_seed44.pt
+  e7_models:
+    backbone: convnext_tiny
+    image_size: 1024
+    region_contralateral: false
+    weight: 0.90
+    checkpoints:
+      - checkpoint/e7_convnext_seed42.pt
+      - checkpoint/e7_convnext_seed43.pt
+      - checkpoint/e7_convnext_seed44.pt
+
+data:
+  dicom_root: /mnt/hcmus/breast_vn/data/TNMammo/dicom_breast_only_dataset/dicoms
+  test_manifest: /mnt/hcmus/breast_vn/code/phase2.2/antigavity_dicom_create/manifests/dicom_tn_test132.csv
+  view_order:
+    - L_CC
+    - L_MLO
+    - R_CC
+    - R_MLO
+  source_representation: breast_only_dicom
