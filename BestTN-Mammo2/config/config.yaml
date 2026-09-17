@@ -1,0 +1,24 @@
+# Master Configuration for BestTN-Mammo2 (E3_E7_CLEAN_RETEST_131)
+# Reference: RAW_TEST131 (N=131), Macro-F1 = 0.7438, BCD-F1 = 0.7450, QWK = 0.7862, Accuracy = 0.7328
+
+model_name: BestTN-Mammo2
+description: "Dual-Backbone Probability Blend (50% DenseNet-121 @ 512 + 50% ConvNeXt-Tiny @ 1024 + Safe Horizontal Flip TTA) evaluated on Clean Retest 131"
+
+ensemble:
+  weights:
+    e3: 0.50
+    e7: 0.50
+  checkpoints:
+    e3: checkpoint/e3_densenet512_best.pt
+    e7: checkpoint/e7_convnext1024_best.pt
+  e7_safe_tta: true
+
+data:
+  dicom_root: data/dicoms
+  test_manifest: data/manifests/dicom_tn_test131_clean.csv
+  view_order:
+    - L_CC
+    - L_MLO
+    - R_CC
+    - R_MLO
+  source_representation: raw_dicom

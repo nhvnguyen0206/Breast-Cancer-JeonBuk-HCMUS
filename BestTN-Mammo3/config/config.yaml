@@ -1,0 +1,29 @@
+# Master Configuration for BestTN-Mammo3 (E3_E7_THRESHOLD_TUNED)
+# Reference: HISTORICAL_TEST132 (N=132), Macro-F1 = 0.7423, BCD-F1 = 0.7430, QWK = 0.7675, Accuracy = 0.7348
+
+model_name: BestTN-Mammo3
+description: "E3+E7 Ensemble with Post-hoc Class-Specific Decision Threshold Multipliers [0.6, 0.7, 0.6, 0.6]"
+
+ensemble:
+  weights:
+    e3: 0.50
+    e7: 0.50
+  checkpoints:
+    e3: checkpoint/e3_densenet512_best.pt
+    e7: checkpoint/e7_convnext1024_best.pt
+  e7_safe_tta: true
+  threshold_multipliers:
+    - 0.6
+    - 0.7
+    - 0.6
+    - 0.6
+
+data:
+  dicom_root: data/dicoms
+  test_manifest: data/manifests/dicom_tn_test132.csv
+  view_order:
+    - L_CC
+    - L_MLO
+    - R_CC
+    - R_MLO
+  source_representation: raw_dicom

@@ -1,0 +1,35 @@
+# Master Configuration for BestTN-Mammo1 (REGION1_ENSEMBLE)
+# Reference: Test-132, Macro-F1 = 0.7496, BCD-F1 = 0.7478, QWK = 0.7749, Accuracy = 0.7121
+
+model_name: BestTN-Mammo1
+description: "6-Model Ensemble (3x DenseNet-121 @ 512 with Region Contralateral Attention + 3x ConvNeXt-Tiny @ 1024 with Bilateral Fusion)"
+
+ensemble:
+  e3_models:
+    backbone: densenet121
+    image_size: 512
+    region_contralateral: true
+    weight: 0.10
+    checkpoints:
+      - checkpoint/e3_region_seed42.pt
+      - checkpoint/e3_region_seed43.pt
+      - checkpoint/e3_region_seed44.pt
+  e7_models:
+    backbone: convnext_tiny
+    image_size: 1024
+    region_contralateral: false
+    weight: 0.90
+    checkpoints:
+      - checkpoint/e7_convnext_seed42.pt
+      - checkpoint/e7_convnext_seed43.pt
+      - checkpoint/e7_convnext_seed44.pt
+
+data:
+  dicom_root: data/dicom_breast_only_dataset/dicoms
+  test_manifest: data/manifests/dicom_tn_test132.csv
+  view_order:
+    - L_CC
+    - L_MLO
+    - R_CC
+    - R_MLO
+  source_representation: breast_only_dicom

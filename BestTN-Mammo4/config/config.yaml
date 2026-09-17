@@ -1,0 +1,24 @@
+# Master Configuration for BestTN-Mammo4 (ENSEMBLE_E3_E7_SOTA)
+# Reference: HISTORICAL_TEST132 (N=132), Macro-F1 = 0.7384, BCD-F1 = 0.7378, QWK = 0.7665, Accuracy = 0.7273
+
+model_name: BestTN-Mammo4
+description: "SOTA DICOM Ensemble (50% DenseNet-121 @ 512 + 50% ConvNeXt-Tiny @ 1024 + Safe Horizontal Flip TTA)"
+
+ensemble:
+  weights:
+    e3: 0.50
+    e7: 0.50
+  checkpoints:
+    e3: checkpoint/e3_densenet512_best.pt
+    e7: checkpoint/e7_convnext1024_best.pt
+  e7_safe_tta: true
+
+data:
+  dicom_root: data/dicoms
+  test_manifest: data/manifests/dicom_tn_test132.csv
+  view_order:
+    - L_CC
+    - L_MLO
+    - R_CC
+    - R_MLO
+  source_representation: raw_dicom

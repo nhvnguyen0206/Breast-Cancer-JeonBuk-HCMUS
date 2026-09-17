@@ -1,0 +1,8 @@
+BestTN-Mammo1/checkpoint/*.pt filter=lfs diff=lfs merge=lfs -text
+BestTN-Mammo2/checkpoint/*.pt filter=lfs diff=lfs merge=lfs -text
+BestTN-Mammo3/checkpoint/*.pt filter=lfs diff=lfs merge=lfs -text
+BestTN-Mammo4/checkpoint/*.pt filter=lfs diff=lfs merge=lfs -text
+BestTN-Mammo5/checkpoint/*.pt filter=lfs diff=lfs merge=lfs -text
+*.pt filter=lfs diff=lfs merge=lfs -text
+*.pth filter=lfs diff=lfs merge=lfs -text
+*.ckpt filter=lfs diff=lfs merge=lfs -text

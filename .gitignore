@@ -9,12 +9,12 @@ runs/
 wandb/
 
 # Medical image data
-data/
-datasets/
-TNMammo/
-VinDr/
-MammosighTR/
-physionet.org/
+/data/
+/datasets/
+/TNMammo/
+/VinDr/
+/MammosighTR/
+/physionet.org/
 *.jpg
 *.jpeg
 *.png
@@ -29,6 +29,11 @@ checkpoints/
 *.ckpt
 *.h5
 *.pkl
+
+# Packaged top-5 models overrides
+!BestTN-Mammo*/checkpoint/*.pt
+!BestTN-Mammo*/src/tn_mammo/data/
+!BestTN-Mammo*/src/tn_mammo/data/**
 
 # Sensitive CSVs
 *with_paths*.csv

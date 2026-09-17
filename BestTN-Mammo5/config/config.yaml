@@ -1,0 +1,26 @@
+# Master Configuration for BestTN-Mammo5 (E3_E7_E9_TRIPLE_BLEND)
+# Reference: HISTORICAL_TEST132 (N=132), Macro-F1 = 0.7375, BCD-F1 = 0.7370, QWK = 0.7651, Accuracy = 0.7273
+
+model_name: BestTN-Mammo5
+description: "Triple-Model Probability Blend (40% DenseNet-121 @ 512 + 40% ConvNeXt-Tiny @ 1024 + 20% ConvNeXt-Tiny E9 CORAL @ 1024)"
+
+ensemble:
+  weights:
+    e3: 0.40
+    e7: 0.40
+    e9: 0.20
+  checkpoints:
+    e3: checkpoint/e3_densenet512_best.pt
+    e7: checkpoint/e7_convnext1024_best.pt
+    e9: checkpoint/e9_coral_s42_best.pt
+  e7_safe_tta: true
+
+data:
+  dicom_root_raw: data/dicoms
+  dicom_root_breast_only: data/dicom_breast_only
+  test_manifest: data/manifests/dicom_tn_test132.csv
+  view_order:
+    - L_CC
+    - L_MLO
+    - R_CC
+    - R_MLO
