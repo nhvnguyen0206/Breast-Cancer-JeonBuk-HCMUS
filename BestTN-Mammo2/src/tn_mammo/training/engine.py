@@ -26,7 +26,6 @@ from tn_mammo.constants import (
 )
 from tn_mammo.data import (
     DicomFourViewDataset,
-    JpegFourViewDataset,
     build_target_aware_sampler,
     compute_domain_sample_weights,
     realized_domain_mass,
@@ -285,15 +284,7 @@ def build_dataloaders(
     ).lower()
 
     if input_mode == "jpeg":
-        tn_train = JpegFourViewDataset(
-            data_config[
-                "train"
-            ][
-                "tn_manifest"
-            ],
-            image_size=image_size,
-            training=True,
-        )
+        raise ValueError("Packaged models are 100% DICOM-native. JPEG mode is not supported.")
     else:
         tn_train = DicomFourViewDataset(
             data_config[
@@ -333,15 +324,7 @@ def build_dataloaders(
         vindr_train = None
 
     if input_mode == "jpeg":
-        tn_valid = JpegFourViewDataset(
-            data_config[
-                "validation"
-            ][
-                "manifest"
-            ],
-            image_size=image_size,
-            training=False,
-        )
+        raise ValueError("Packaged models are 100% DICOM-native. JPEG mode is not supported.")
     else:
         tn_valid = DicomFourViewDataset(
             data_config[
