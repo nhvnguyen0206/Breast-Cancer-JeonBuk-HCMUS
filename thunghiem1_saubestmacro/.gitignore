@@ -1,7 +1,0 @@
-__pycache__/
-*.py[cod]
-.matplotlib/
-logs/
-outputs/
-queue_status.txt
-tonghop.pdf
