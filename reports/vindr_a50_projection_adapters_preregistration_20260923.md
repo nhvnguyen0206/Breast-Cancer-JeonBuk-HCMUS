@@ -72,6 +72,5 @@ adapter norms. Scores remain selected DEV, not an independent test. Final CV5
 acceptance remains mean Macro-F1 >= `.72`, sample SD <= `.03` and minimum
 fold >= `.65`.
 
-Status: preregistered; implementation and real-cache RTX5090 preflight passed.
-The registered folds2/3 screen is unlocked; folds0/1/4 remain locked until all
-screening gates pass.
+Status: completed and rejected after both final audits PASS. Fold2 Macro-F1,
+two-fold SD and QWK mean gates fail; folds0/1/4 remain locked.

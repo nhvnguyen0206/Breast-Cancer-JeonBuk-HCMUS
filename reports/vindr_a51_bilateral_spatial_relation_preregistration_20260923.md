@@ -74,4 +74,6 @@ bilateral-branch norms. Results are selected DEV, not independent-test
 estimates. Final CV5 acceptance remains mean Macro-F1 >= `.72`, sample SD <=
 `.03` and minimum fold >= `.65`.
 
-Status: preregistered and locked pending audited A50 completion.
+Status: preregistered; implementation unlocked after audited A50 rejection.
+Training remains locked pending every registered validation and real-cache
+RTX5090 preflight.

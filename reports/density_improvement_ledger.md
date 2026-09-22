@@ -4457,3 +4457,12 @@ sampleSD .1327855 and minimum .5391099; fold2 Macro, SD and QWK mean gates
 fail despite passing B/C/D gates. Continue unchanged to50 and queued audits;
 folds0/1/4 remain locked. Exact report:
 vindr_a50_projection_adapters_first40_20260923.md.
+
+A50 folds2/3 complete50 and read-only audits1080/1081 both PASS. Selected
+epochs4/40 give Macro .5391099/.7268970, mean .6330034, sampleSD .1327855 and
+minimum .5391099. Fold2 Macro, SD and QWK mean gates fail; B/C/D mean/minimum
+and QWK minimum pass. Reject A50 without folds0/1/4. Projection adapters help
+fold3 late but worsen fold sensitivity and never recover fold2 A. A51
+implementation is now unlocked, with training locked pending validation and
+real-cache preflight. Exact report:
+vindr_a50_projection_adapters_twofold_final_20260923.md.
