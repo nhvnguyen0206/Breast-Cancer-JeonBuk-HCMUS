@@ -4376,3 +4376,11 @@ against A42 under matched seeds; the fine-D head gradient is finite/non-zero.
 Diagnostic job1071 had first stopped only because its loss weights were on CPU;
 the corrected audit moved that diagnostic object to CUDA, with no model or
 training change. Evidence is recorded in the A49 implementation report.
+
+A49 matched first10 selects fold2 epoch5 Macro .6062836 and fold3 epoch7
+.7112440, mean .6587638, sampleSD .0742182, minimum .6062836. Relative to A48,
+fold2 recovers .0662005 and SD falls .0659904; rare-A positive-epoch counts
+return exactly to A42's 1/10 and 4/10. Relative to A42, mean is still .0136062
+lower and B/C/D mean .0070309 lower because fold3 regresses. No final gate is
+claimed; continue unchanged to20/40/50 with folds0/1/4 locked. Exact report:
+vindr_a49_rng_isolated_fine_d_first10_20260923.md.
