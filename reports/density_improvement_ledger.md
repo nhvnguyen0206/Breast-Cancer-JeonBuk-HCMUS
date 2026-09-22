@@ -4473,3 +4473,11 @@ side symmetry, strict roundtrip and finite production 512 forward. It adds
 987,648 parameters to A42. Atlas payload transfer is awaiting explicit user
 authorization; no remote validation or training has been claimed. Exact
 report: vindr_a51_local_implementation_validation_20260923.md.
+
+A51 Atlas deployment is now authorized and validated. Registered hashes match,
+remote focused tests pass 25/25, CUDA parity job1082 and real-cache preflight
+job1083 both PASS on RTX5090 with worker2/Vesta excluded. The read-only
+snapshot then launched the fixed fold2/3 full50 screen as array job1084, W&B
+offline IDs 5hzj03pt/oeauqr5m. Audits1086/1087 wait on afterok:1084;
+folds0/1/4 stay locked until all registered two-fold gates pass. Exact receipt:
+vindr_a51_bilateral_spatial_relation_launch_20260923.md.

@@ -38,6 +38,25 @@ zero-initialized projection returns the concatenated summaries to the
 - config: `fdce2e8ef6129cc98babd3d541b9ea4b05194e89c095fd34d66f639e7215ec36`
 - tests: `ee24429909476c3e7260237b83282f1fd661d184dac00ed0dfb125215403ea90`
 
-Atlas deployment, CUDA parity, real-cache preflight and training remain locked
-until the user explicitly authorizes sending this source/test/config/report
-payload to the named Atlas snapshot path.
+## Atlas validation
+
+The user explicitly authorized sending the registered A51 payload to Atlas.
+The immutable experiment snapshot is
+`/slurmshared/Ngoc/code/hcmus-density-bilateral-relation-20260923-v1`.
+
+- every source, auditor, verifier, config and test identity above matches the
+  local registered hash;
+- focused remote tests PASS 25/25;
+- CUDA parity job `1082` COMPLETED with exit `0:0` on
+  `NVIDIA GeForce RTX 5090` (worker3), excluding worker2;
+- CUDA verification PASS: architecture v18, construction/post-forward CPU and
+  CUDA RNG exact, shared state and all three outputs exact, finite non-zero
+  bilateral gradient;
+- real-cache preflight job `1083` COMPLETED with exit `0:0` on
+  `NVIDIA GeForce RTX 5090`, excluding worker2;
+- preflight PASS with batch `[2,4,3,512,512]`, finite loss `1.9320508242`,
+  finite gradient norm `42.6261787415`, AMP enabled and peak memory
+  `2.7013158798 GiB`.
+
+All registered implementation and execution gates therefore pass. Training is
+unlocked only for the preregistered fold2/3 screen; folds0/1/4 remain locked.

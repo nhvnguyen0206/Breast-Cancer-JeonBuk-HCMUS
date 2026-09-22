@@ -74,6 +74,7 @@ bilateral-branch norms. Results are selected DEV, not independent-test
 estimates. Final CV5 acceptance remains mean Macro-F1 >= `.72`, sample SD <=
 `.03` and minimum fold >= `.65`.
 
-Status: preregistered; implementation unlocked after audited A50 rejection.
-Training remains locked pending every registered validation and real-cache
-RTX5090 preflight.
+Status: preregistered and validation-complete. Local tests, remote hash/test
+checks, CUDA parity job `1082` and real-cache RTX5090 preflight job `1083` all
+PASS. The fold2/3 screen is unlocked; folds0/1/4 remain locked until every
+two-fold gate passes.
