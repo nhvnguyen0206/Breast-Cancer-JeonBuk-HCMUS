@@ -1,0 +1,28 @@
+{
+  "experiment": "A22",
+  "arm": "auggeo_dropout30_ordinal025",
+  "horizon_epochs": 40,
+  "metric_policy": "best selected DEV Macro-F1 within epochs 1-40 per fold",
+  "independent_test": false,
+  "folds": [
+    {"fold": 0, "best_epoch": 22, "macro_f1": 0.7718528368794326, "accuracy": 0.801980198019802, "qwk": 0.6258219875891451, "per_class_f1": [1.0, 0.5957446808510638, 0.8666666666666667, 0.625], "severe_errors": 0, "amp_skipped_updates": 16},
+    {"fold": 1, "best_epoch": 10, "macro_f1": 0.5662064283375747, "accuracy": 0.8486352357320099, "qwk": 0.6721436097144611, "per_class_f1": [0.0, 0.7631578947368421, 0.9035369774919614, 0.5981308411214953], "severe_errors": 0, "amp_skipped_updates": 15},
+    {"fold": 2, "best_epoch": 9, "macro_f1": 0.6818484501183237, "accuracy": 0.8213399503722084, "qwk": 0.6155313871398589, "per_class_f1": [0.6666666666666666, 0.6732673267326733, 0.887459807073955, 0.5], "severe_errors": 1, "amp_skipped_updates": 17},
+    {"fold": 3, "best_epoch": 15, "macro_f1": 0.5932826717184764, "accuracy": 0.8217821782178217, "qwk": 0.6284393122652836, "per_class_f1": [0.3333333333333333, 0.5555555555555556, 0.8924050632911392, 0.5918367346938775], "severe_errors": 0, "amp_skipped_updates": 14},
+    {"fold": 4, "best_epoch": 29, "macro_f1": 0.5626107987105006, "accuracy": 0.7915632754342432, "qwk": 0.6298386038577615, "per_class_f1": [0.25, 0.5217391304347826, 0.8708609271523179, 0.6078431372549019], "severe_errors": 0, "amp_skipped_updates": 14}
+  ],
+  "aggregate": {
+    "mean_macro_f1": 0.6351602371528616,
+    "sample_sd_macro_f1": 0.09032778546087743,
+    "min_macro_f1": 0.5626107987105006,
+    "max_macro_f1": 0.7718528368794326,
+    "mean_accuracy": 0.817060167555217,
+    "mean_qwk": 0.634354980113302,
+    "mean_per_class_f1": [0.45, 0.6218929176621835, 0.8841858883352081, 0.5845621426140549]
+  },
+  "all_losses_finite": true,
+  "new_best_checkpoints_epochs_31_40": 0,
+  "confirmation_job_id": "951_[1-4]",
+  "confirmation_state": "RUNNING",
+  "decision": "continue_all_confirmation_folds_to_epoch50_then_audit"
+}

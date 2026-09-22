@@ -1,0 +1,25 @@
+{
+  "audit": "PASS",
+  "arm": "auggeo_dropout50",
+  "fold": 0,
+  "assignments_sha256": "43daa86936ee7b1bae1b200836fb1afdfe0c8294c7c865d8f5758bf989f12a9a",
+  "independent_test": false,
+  "epochs": 50,
+  "best_epoch": 18,
+  "best": {
+    "num_samples": 404,
+    "accuracy": 0.8366336633663366,
+    "macro_f1": 0.7983834791246115,
+    "per_class_f1": [1.0, 0.6666666666666666, 0.8932038834951457, 0.6336633663366337],
+    "qwk": 0.6632653061224489,
+    "confusion_matrix": [[1,0,0,0],[0,29,11,0],[0,18,276,17],[0,0,20,32]],
+    "severe_errors": 0
+  },
+  "epoch50": {"accuracy": 0.8242574257425742, "macro_f1": 0.5661339637136076, "qwk": 0.6284635964074146},
+  "epochs_at_or_above_075": 3,
+  "amp_skipped_updates_total": 18,
+  "all_fold_manifests_validated": true,
+  "wandb_id": "wpzkdvb6",
+  "wandb_url": "https://wandb.ai/TN_Mammo_BreastDensity/HCMUS-paper1/runs/wpzkdvb6",
+  "wandb_state": "finished"
+}

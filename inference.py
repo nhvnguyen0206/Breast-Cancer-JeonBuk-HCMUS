@@ -24,7 +24,9 @@ def main():
         raise FileExistsError("Use a new empty output directory")
     device = torch.device(args.device)
     model, config = load_model(args.checkpoint, device)
-    dataset = FourViewDataset(args.manifest, config["image_size"], require_labels=False)
+    dataset = FourViewDataset(args.manifest, config["image_size"], require_labels=False,
+                              input_mode=config.get("input_mode", "dicom"),
+                              resize_mode=config.get("resize_mode", "stretch"))
     rows = predict(model, DataLoader(dataset, batch_size=args.batch_size,
                                     num_workers=args.num_workers), device)
     output.mkdir(parents=True, exist_ok=True)

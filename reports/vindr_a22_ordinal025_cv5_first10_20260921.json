@@ -1,0 +1,24 @@
+{
+  "experiment": "A22",
+  "arm": "auggeo_dropout30_ordinal025",
+  "horizon_epochs": 10,
+  "metric_policy": "best selected DEV Macro-F1 within epochs 1-10 per fold",
+  "independent_test": false,
+  "folds": [
+    {"fold": 0, "best_epoch": 10, "macro_f1": 0.5607156940063092, "accuracy": 0.8341584158415841, "qwk": 0.6563623991445514, "per_class_f1": [0.2, 0.4375, 0.9053627760252366, 0.7], "severe_errors": 1, "amp_skipped_updates": 7},
+    {"fold": 1, "best_epoch": 10, "macro_f1": 0.5662064283375747, "accuracy": 0.8486352357320099, "qwk": 0.6721436097144611, "per_class_f1": [0.0, 0.7631578947368421, 0.9035369774919614, 0.5981308411214953], "severe_errors": 0, "amp_skipped_updates": 7},
+    {"fold": 2, "best_epoch": 9, "macro_f1": 0.6818484501183237, "accuracy": 0.8213399503722084, "qwk": 0.6155313871398589, "per_class_f1": [0.6666666666666666, 0.6732673267326733, 0.887459807073955, 0.5], "severe_errors": 1, "amp_skipped_updates": 7},
+    {"fold": 3, "best_epoch": 8, "macro_f1": 0.5488877418289183, "accuracy": 0.8465346534653465, "qwk": 0.6478004291845494, "per_class_f1": [0.0, 0.6493506493506493, 0.9062003179650239, 0.64], "severe_errors": 1, "amp_skipped_updates": 6},
+    {"fold": 4, "best_epoch": 8, "macro_f1": 0.524670135526169, "accuracy": 0.794044665012407, "qwk": 0.6231310912061292, "per_class_f1": [0.0, 0.631578947368421, 0.8605442176870748, 0.6065573770491803], "severe_errors": 0, "amp_skipped_updates": 6}
+  ],
+  "aggregate": {
+    "mean_macro_f1": 0.576465689963459,
+    "sample_sd_macro_f1": 0.06103720923009588,
+    "min_macro_f1": 0.524670135526169,
+    "max_macro_f1": 0.6818484501183237
+  },
+  "all_losses_finite": true,
+  "confirmation_job_id": "951_[1-4]",
+  "confirmation_state": "RUNNING",
+  "decision": "continue_all_confirmation_folds_to_epoch50"
+}

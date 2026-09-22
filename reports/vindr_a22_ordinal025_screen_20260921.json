@@ -1,0 +1,50 @@
+{
+  "audit": "PASS",
+  "experiment": "A22",
+  "arm": "auggeo_dropout30_ordinal025",
+  "job_id": "950_0",
+  "slurm_state": "COMPLETED",
+  "exit_code": "0:0",
+  "runtime": "00:55:47",
+  "gpu": "NVIDIA GeForce RTX 5090",
+  "requeue": 0,
+  "restarts": 0,
+  "wandb_id": "gdne1bkg",
+  "wandb_url": "https://wandb.ai/TN_Mammo_BreastDensity/HCMUS-paper1/runs/gdne1bkg",
+  "wandb_state": "finished",
+  "fold": 0,
+  "assignments_sha256": "43daa86936ee7b1bae1b200836fb1afdfe0c8294c7c865d8f5758bf989f12a9a",
+  "independent_test": false,
+  "epochs": 50,
+  "best_epoch": 22,
+  "best": {
+    "num_samples": 404,
+    "accuracy": 0.801980198019802,
+    "macro_f1": 0.7718528368794326,
+    "per_class_f1": [1.0, 0.5957446808510638, 0.8666666666666667, 0.625],
+    "qwk": 0.6258219875891451,
+    "confusion_matrix": [[1, 0, 0, 0], [0, 28, 12, 0], [0, 26, 260, 25], [0, 0, 17, 35]],
+    "severe_errors": 0
+  },
+  "epoch50": {
+    "num_samples": 404,
+    "accuracy": 0.8242574257425742,
+    "macro_f1": 0.517913231794505,
+    "per_class_f1": [0.0, 0.6075949367088608, 0.889589905362776, 0.574468085106383],
+    "qwk": 0.5985331989698802,
+    "severe_errors": 0
+  },
+  "epochs_at_or_above_075": 1,
+  "amp_skipped_updates_total": 17,
+  "max_probability_sum_error": 1.3301132639753632e-07,
+  "all_fold_manifests_validated": true,
+  "audit_script_sha256": "b6da84e187cd18f66d04f2ef651f8126fb1ccf8d5afb9f7249a5339a53851eb3",
+  "gate": "PASS",
+  "confirmation_job_id": "951_[1-4]",
+  "confirmation_runs": {
+    "1": "https://wandb.ai/TN_Mammo_BreastDensity/HCMUS-paper1/runs/8jhy78kl",
+    "2": "https://wandb.ai/TN_Mammo_BreastDensity/HCMUS-paper1/runs/43295usj",
+    "3": "https://wandb.ai/TN_Mammo_BreastDensity/HCMUS-paper1/runs/p96msbjn",
+    "4": "https://wandb.ai/TN_Mammo_BreastDensity/HCMUS-paper1/runs/dj5bsgwx"
+  }
+}

@@ -1,0 +1,31 @@
+# Ablation L1: only resize geometry differs from the seed-42 baseline.
+seed: 42
+image_size: 512
+input_mode: window16_cache
+resize_mode: letterbox
+experiment:
+  arm: letterbox
+model:
+  pretrained: true
+  dropout: 0.1
+  bottleneck: 256
+loss:
+  beta: 0.999
+  gamma: 2.0
+  ordinal: 0.5
+  binary: 0.3
+  neighbor: 0.2
+training:
+  batch_size: 2
+  num_workers: 4
+  epochs: 50
+  min_epochs: 50
+  patience: 10
+  learning_rate: 0.00005
+  weight_decay: 0.0001
+  amp: true
+wandb:
+  enabled: true
+  project: HCMUS-paper1
+  entity: TN_Mammo_BreastDensity
+  mode: online

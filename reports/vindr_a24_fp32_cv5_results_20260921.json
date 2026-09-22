@@ -1,0 +1,507 @@
+{
+  "audit": "PASS",
+  "arm": "auggeo_dropout30_fp32",
+  "assignments_sha256": "43daa86936ee7b1bae1b200836fb1afdfe0c8294c7c865d8f5758bf989f12a9a",
+  "independent_test": false,
+  "folds": [
+    {
+      "fold": 0,
+      "best_epoch": 43,
+      "best": {
+        "num_samples": 404,
+        "accuracy": 0.8613861386138614,
+        "macro_f1": 0.801688234419158,
+        "per_class_f1": [
+          1,
+          0.6666666666666666,
+          0.9135802469135802,
+          0.6265060240963856
+        ],
+        "qwk": 0.6632531555132174,
+        "confusion_matrix": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            25,
+            15,
+            0
+          ],
+          [
+            0,
+            10,
+            296,
+            5
+          ],
+          [
+            0,
+            0,
+            26,
+            26
+          ]
+        ],
+        "severe_errors": 0
+      },
+      "epoch50": {
+        "num_samples": 404,
+        "accuracy": 0.8564356435643564,
+        "macro_f1": 0.5474088489488576,
+        "per_class_f1": [
+          0,
+          0.6753246753246753,
+          0.9119010819165378,
+          0.6024096385542169
+        ],
+        "qwk": 0.6469808364469085,
+        "severe_errors": 0,
+        "confusion_matrix": [
+          [
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            26,
+            14,
+            0
+          ],
+          [
+            0,
+            10,
+            295,
+            6
+          ],
+          [
+            0,
+            0,
+            27,
+            25
+          ]
+        ]
+      },
+      "max_probability_sum_error": 1.1164888746861834e-7,
+      "wandb_id": "ikzls2eb",
+      "wandb_url": "https://wandb.ai/TN_Mammo_BreastDensity/HCMUS-paper1/runs/ikzls2eb",
+      "wandb_state": "finished"
+    },
+    {
+      "fold": 1,
+      "best_epoch": 2,
+      "best": {
+        "num_samples": 403,
+        "accuracy": 0.8660049627791563,
+        "macro_f1": 0.5697976626548055,
+        "per_class_f1": [
+          0,
+          0.717948717948718,
+          0.9167974882260597,
+          0.6444444444444445
+        ],
+        "qwk": 0.686046511627907,
+        "confusion_matrix": [
+          [
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            28,
+            11,
+            0
+          ],
+          [
+            0,
+            10,
+            292,
+            10
+          ],
+          [
+            0,
+            0,
+            22,
+            29
+          ]
+        ],
+        "severe_errors": 0
+      },
+      "epoch50": {
+        "num_samples": 403,
+        "accuracy": 0.8535980148883374,
+        "macro_f1": 0.5331865861977334,
+        "per_class_f1": [
+          0,
+          0.6153846153846154,
+          0.9127105666156202,
+          0.6046511627906976
+        ],
+        "qwk": 0.6281183039554562,
+        "severe_errors": 0,
+        "confusion_matrix": [
+          [
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            20,
+            18,
+            0
+          ],
+          [
+            0,
+            5,
+            298,
+            9
+          ],
+          [
+            0,
+            0,
+            25,
+            26
+          ]
+        ]
+      },
+      "max_probability_sum_error": 1.3264070730656385e-7,
+      "wandb_id": "nls020ul",
+      "wandb_url": "https://wandb.ai/TN_Mammo_BreastDensity/HCMUS-paper1/runs/nls020ul",
+      "wandb_state": "finished"
+    },
+    {
+      "fold": 2,
+      "best_epoch": 48,
+      "best": {
+        "num_samples": 403,
+        "accuracy": 0.8560794044665012,
+        "macro_f1": 0.671793688098036,
+        "per_class_f1": [
+          0.5,
+          0.7027027027027027,
+          0.9130434782608695,
+          0.5714285714285714
+        ],
+        "qwk": 0.6676052332195677,
+        "confusion_matrix": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            2,
+            26,
+            11,
+            0
+          ],
+          [
+            0,
+            9,
+            294,
+            8
+          ],
+          [
+            0,
+            0,
+            28,
+            24
+          ]
+        ],
+        "severe_errors": 0
+      },
+      "epoch50": {
+        "num_samples": 403,
+        "accuracy": 0.8535980148883374,
+        "macro_f1": 0.6644534152906125,
+        "per_class_f1": [
+          0.5,
+          0.7027027027027027,
+          0.9119010819165378,
+          0.5432098765432098
+        ],
+        "qwk": 0.6562874943984272,
+        "severe_errors": 0,
+        "confusion_matrix": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            2,
+            26,
+            11,
+            0
+          ],
+          [
+            0,
+            9,
+            295,
+            7
+          ],
+          [
+            0,
+            0,
+            30,
+            22
+          ]
+        ]
+      },
+      "max_probability_sum_error": 1.284483630570321e-7,
+      "wandb_id": "usyx425t",
+      "wandb_url": "https://wandb.ai/TN_Mammo_BreastDensity/HCMUS-paper1/runs/usyx425t",
+      "wandb_state": "finished"
+    },
+    {
+      "fold": 3,
+      "best_epoch": 21,
+      "best": {
+        "num_samples": 404,
+        "accuracy": 0.844059405940594,
+        "macro_f1": 0.705647609095885,
+        "per_class_f1": [
+          0.6666666666666666,
+          0.6753246753246753,
+          0.9028213166144201,
+          0.5777777777777777
+        ],
+        "qwk": 0.6482198142414861,
+        "confusion_matrix": [
+          [
+            1,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            26,
+            13,
+            0
+          ],
+          [
+            0,
+            11,
+            288,
+            12
+          ],
+          [
+            0,
+            0,
+            26,
+            26
+          ]
+        ],
+        "severe_errors": 0
+      },
+      "epoch50": {
+        "num_samples": 404,
+        "accuracy": 0.8391089108910891,
+        "macro_f1": 0.6401900132567389,
+        "per_class_f1": [
+          0.5,
+          0.6575342465753424,
+          0.9032258064516129,
+          0.5
+        ],
+        "qwk": 0.6163959331541429,
+        "severe_errors": 0,
+        "confusion_matrix": [
+          [
+            1,
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            24,
+            14,
+            0
+          ],
+          [
+            0,
+            9,
+            294,
+            8
+          ],
+          [
+            0,
+            0,
+            32,
+            20
+          ]
+        ]
+      },
+      "max_probability_sum_error": 1.2541867278059726e-7,
+      "wandb_id": "lb2y56pt",
+      "wandb_url": "https://wandb.ai/TN_Mammo_BreastDensity/HCMUS-paper1/runs/lb2y56pt",
+      "wandb_state": "finished"
+    },
+    {
+      "fold": 4,
+      "best_epoch": 19,
+      "best": {
+        "num_samples": 403,
+        "accuracy": 0.8188585607940446,
+        "macro_f1": 0.6556473298042138,
+        "per_class_f1": [
+          0.5,
+          0.6075949367088608,
+          0.8834154351395731,
+          0.631578947368421
+        ],
+        "qwk": 0.6492518628912072,
+        "confusion_matrix": [
+          [
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            2,
+            24,
+            13,
+            0
+          ],
+          [
+            0,
+            16,
+            269,
+            26
+          ],
+          [
+            0,
+            0,
+            16,
+            36
+          ]
+        ],
+        "severe_errors": 0
+      },
+      "epoch50": {
+        "num_samples": 403,
+        "accuracy": 0.8064516129032258,
+        "macro_f1": 0.49872767578368926,
+        "per_class_f1": [
+          0,
+          0.5833333333333334,
+          0.8821656050955414,
+          0.5294117647058824
+        ],
+        "qwk": 0.5881720993606541,
+        "severe_errors": 0,
+        "confusion_matrix": [
+          [
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            3,
+            21,
+            15,
+            0
+          ],
+          [
+            0,
+            11,
+            277,
+            23
+          ],
+          [
+            0,
+            0,
+            25,
+            27
+          ]
+        ]
+      },
+      "max_probability_sum_error": 1.2785000080839382e-7,
+      "wandb_id": "n8ejk3n7",
+      "wandb_url": "https://wandb.ai/TN_Mammo_BreastDensity/HCMUS-paper1/runs/n8ejk3n7",
+      "wandb_state": "finished"
+    }
+  ],
+  "aggregate": {
+    "macro_f1_mean": 0.6809149048144196,
+    "macro_f1_sample_sd": 0.08406335743255076,
+    "accuracy_mean": 0.8492776945188315,
+    "accuracy_sample_sd": 0.018876131835732342,
+    "qwk_mean": 0.6628753154986771,
+    "qwk_sample_sd": 0.015490330797224163,
+    "per_class_f1_mean": [
+      0.5333333333333333,
+      0.6740475398703247,
+      0.9059315930309005,
+      0.61034715302312
+    ],
+    "per_class_f1_sample_sd": [
+      0.36132472314464664,
+      0.04248672917739473,
+      0.013636345567155856,
+      0.03335394911010447
+    ],
+    "bcd_f1_mean": 0.7301087619747818,
+    "epoch50_macro_f1_mean": 0.5767933078955263,
+    "epoch50_macro_f1_sample_sd": 0.07169845221657918
+  },
+  "pooled_descriptive": {
+    "num_samples": 2017,
+    "accuracy": 0.849281110560238,
+    "macro_f1": 0.690735691206694,
+    "per_class_f1": [
+      0.5714285714285714,
+      0.6736292428198434,
+      0.9061712846347607,
+      0.6117136659436009
+    ],
+    "qwk": 0.6622412005715539,
+    "confusion_matrix": [
+      [
+        4,
+        2,
+        0,
+        0
+      ],
+      [
+        4,
+        129,
+        63,
+        0
+      ],
+      [
+        0,
+        56,
+        1439,
+        61
+      ],
+      [
+        0,
+        0,
+        118,
+        141
+      ]
+    ],
+    "severe_errors": 0
+  },
+  "unique_cases": 2017,
+  "support": [
+    6,
+    196,
+    1556,
+    259
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "audit": "PASS",
+  "arm": "auggeo_dropout30_backbonelr01",
+  "fold": 0,
+  "assignments_sha256": "43daa86936ee7b1bae1b200836fb1afdfe0c8294c7c865d8f5758bf989f12a9a",
+  "independent_test": false,
+  "epochs": 50,
+  "best_epoch": 20,
+  "best": {
+    "num_samples": 404,
+    "accuracy": 0.8292079207920792,
+    "macro_f1": 0.6647013473177328,
+    "per_class_f1": [
+      0.5,
+      0.6206896551724138,
+      0.8910569105691057,
+      0.6470588235294118
+    ],
+    "qwk": 0.6636583011583012,
+    "confusion_matrix": [
+      [1, 0, 0, 0],
+      [2, 27, 11, 0],
+      [0, 20, 274, 17],
+      [0, 0, 19, 33]
+    ],
+    "severe_errors": 0
+  },
+  "epoch50": {
+    "num_samples": 404,
+    "accuracy": 0.8143564356435643,
+    "macro_f1": 0.5668188358910276,
+    "per_class_f1": [
+      0.2222222222222222,
+      0.5952380952380952,
+      0.8906752411575563,
+      0.5591397849462365
+    ],
+    "qwk": 0.649435394298408,
+    "severe_errors": 0,
+    "confusion_matrix": [
+      [1, 0, 0, 0],
+      [7, 25, 8, 0],
+      [0, 19, 277, 15],
+      [0, 0, 26, 26]
+    ]
+  },
+  "epochs_at_or_above_075": 0,
+  "amp_skipped_updates_total": 20,
+  "max_probability_sum_error": 1.2138594485122667e-07,
+  "all_fold_manifests_validated": true,
+  "backbone_trainable_all_epochs": true,
+  "backbone_lr_multiplier": 0.1,
+  "job_state": "COMPLETED",
+  "exit_code": "0:0",
+  "restarts": 0,
+  "requeue": 0,
+  "node": "slurm-b20a-master-0",
+  "wandb_id": "en6zi94h",
+  "wandb_url": "https://wandb.ai/TN_Mammo_BreastDensity/HCMUS-paper1/runs/en6zi94h",
+  "wandb_state": "finished"
+}

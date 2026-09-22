@@ -1,0 +1,19 @@
+{
+  "milestone": "common_epoch20",
+  "fold0_source": "completed audited job936 selected checkpoint",
+  "folds1_4_source": "job937 best checkpoints through epoch 20",
+  "folds": [
+    {"fold": 1, "best_epoch": 5, "best_macro_f1": 0.564052089742717, "epoch20_macro_f1": 0.4776296296296296, "best_per_class_f1": [0.0, 0.7323943661971831, 0.909952606635071, 0.6138613861386139], "amp_skipped_updates_through_epoch20": 10},
+    {"fold": 2, "best_epoch": 9, "best_macro_f1": 0.6043886972622505, "epoch20_macro_f1": 0.5252938517179023, "best_per_class_f1": [0.4, 0.6086956521739131, 0.8542372881355932, 0.5546218487394958], "amp_skipped_updates_through_epoch20": 10},
+    {"fold": 3, "best_epoch": 7, "best_macro_f1": 0.5972447287141008, "epoch20_macro_f1": 0.5083325291127839, "best_per_class_f1": [0.4, 0.631578947368421, 0.8339100346020761, 0.5234899328859061], "amp_skipped_updates_through_epoch20": 11},
+    {"fold": 4, "best_epoch": 20, "best_macro_f1": 0.5587366167678172, "epoch20_macro_f1": 0.5587366167678172, "best_per_class_f1": [0.0, 0.7209302325581395, 0.9017713365539453, 0.6122448979591837], "amp_skipped_updates_through_epoch20": 10}
+  ],
+  "provisional_best_so_far_cv5": {
+    "values": [0.7623856925078064, 0.564052089742717, 0.6043886972622505, 0.5972447287141008, 0.5587366167678172],
+    "mean": 0.6173615649989384,
+    "sample_sd": 0.08349216230630317,
+    "min": 0.5587366167678172
+  },
+  "status": "INTERMEDIATE_ONLY",
+  "warning": "Folds 1-4 are best-so-far through epoch 20, not completed selected checkpoints. This is not the final CV5 result."
+}

@@ -1,0 +1,34 @@
+{
+  "audit": "PASS",
+  "arm": "auggeo_dropout30_labelsmooth005",
+  "fold": 0,
+  "assignments_sha256": "43daa86936ee7b1bae1b200836fb1afdfe0c8294c7c865d8f5758bf989f12a9a",
+  "independent_test": false,
+  "epochs": 50,
+  "best_epoch": 19,
+  "best": {
+    "num_samples": 404,
+    "accuracy": 0.8094059405940595,
+    "macro_f1": 0.7743055555555555,
+    "per_class_f1": [1.0, 0.5555555555555556, 0.875, 0.6666666666666666],
+    "qwk": 0.6146141371744729,
+    "confusion_matrix": [[1, 0, 0, 0], [0, 30, 10, 0], [0, 37, 266, 8], [0, 1, 21, 30]],
+    "severe_errors": 1
+  },
+  "epoch50": {
+    "num_samples": 404,
+    "accuracy": 0.849009900990099,
+    "macro_f1": 0.6400411736645913,
+    "per_class_f1": [0.3333333333333333, 0.6329113924050633, 0.907051282051282, 0.6868686868686869],
+    "qwk": 0.683323535175387,
+    "severe_errors": 1,
+    "confusion_matrix": [[1, 0, 0, 0], [3, 25, 12, 0], [1, 14, 283, 13], [0, 0, 18, 34]]
+  },
+  "epochs_at_or_above_075": 1,
+  "amp_skipped_updates_total": 17,
+  "max_probability_sum_error": 1.2896634871140122e-07,
+  "all_fold_manifests_validated": true,
+  "wandb_id": "xtmvoors",
+  "wandb_url": "https://wandb.ai/TN_Mammo_BreastDensity/HCMUS-paper1/runs/xtmvoors",
+  "wandb_state": "finished"
+}

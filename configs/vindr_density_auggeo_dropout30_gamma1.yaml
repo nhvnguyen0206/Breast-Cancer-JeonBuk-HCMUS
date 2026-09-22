@@ -1,0 +1,37 @@
+# A12: A5 with focal gamma 2 -> 1 only.
+seed: 42
+image_size: 512
+input_mode: window16_cache
+resize_mode: stretch
+experiment:
+  arm: auggeo_dropout30_gamma1
+augmentation:
+  brightness_min: 0.9
+  brightness_max: 1.1
+  rotation_degrees: 5.0
+  translation_fraction: 0.03
+model:
+  pretrained: true
+  dropout: 0.3
+  bottleneck: 256
+loss:
+  beta: 0.999
+  gamma: 1.0
+  ordinal: 0.5
+  binary: 0.3
+  neighbor: 0.2
+training:
+  batch_size: 2
+  num_workers: 4
+  valid_num_workers: 0
+  epochs: 50
+  min_epochs: 50
+  patience: 10
+  learning_rate: 0.00005
+  weight_decay: 0.0001
+  amp: true
+wandb:
+  enabled: true
+  project: HCMUS-paper1
+  entity: TN_Mammo_BreastDensity
+  mode: online

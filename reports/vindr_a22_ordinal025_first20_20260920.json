@@ -1,0 +1,33 @@
+{
+  "experiment": "A22",
+  "arm": "auggeo_dropout30_ordinal025",
+  "job_id": "950_0",
+  "wandb_id": "gdne1bkg",
+  "wandb_url": "https://wandb.ai/TN_Mammo_BreastDensity/HCMUS-paper1/runs/gdne1bkg",
+  "fold": 0,
+  "horizon_epochs": 20,
+  "state_at_audit": "RUNNING",
+  "best_epoch": 18,
+  "best": {
+    "num_samples": 404,
+    "accuracy": 0.8094059405940595,
+    "macro_f1": 0.6888524590163935,
+    "per_class_f1": [0.6666666666666666, 0.6133333333333333, 0.8754098360655738, 0.6],
+    "qwk": 0.6254214430209035,
+    "severe_errors": 0,
+    "confusion_matrix": [[1, 0, 0, 0], [1, 23, 16, 0], [0, 12, 267, 32], [0, 0, 16, 36]]
+  },
+  "epoch20": {
+    "accuracy": 0.7574257425742574,
+    "macro_f1": 0.48490926448525384,
+    "per_class_f1": [0.0, 0.5614035087719298, 0.8361774744027304, 0.5420560747663551],
+    "qwk": 0.5529798422436459,
+    "severe_errors": 1
+  },
+  "amp_skipped_updates": 10,
+  "finite_losses": true,
+  "checkpoints_macro_f1_ge_075": 0,
+  "matched_a5_first20_macro_f1": 0.7654421855,
+  "delta_vs_a5_first20": -0.0765897264836065,
+  "decision": "continue_registered_fold0_to_epoch50"
+}

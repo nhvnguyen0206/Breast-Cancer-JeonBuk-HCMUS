@@ -1,0 +1,60 @@
+{
+  "milestone": "common_epoch10",
+  "fold0_source": "completed audited job936 selected checkpoint",
+  "folds1_4_source": "job937 best checkpoints through epoch 10",
+  "folds": [
+    {
+      "fold": 1,
+      "best_epoch": 5,
+      "best_macro_f1": 0.564052089742717,
+      "best_accuracy": 0.8560794044665012,
+      "best_qwk": 0.6687733817027548,
+      "best_per_class_f1": [0.0, 0.7323943661971831, 0.909952606635071, 0.6138613861386139],
+      "best_severe_errors": 0,
+      "epoch10_macro_f1": 0.49373518242662023,
+      "amp_skipped_updates_through_epoch10": 6
+    },
+    {
+      "fold": 2,
+      "best_epoch": 9,
+      "best_macro_f1": 0.6043886972622505,
+      "best_accuracy": 0.7791563275434243,
+      "best_qwk": 0.6141715342993299,
+      "best_per_class_f1": [0.4, 0.6086956521739131, 0.8542372881355932, 0.5546218487394958],
+      "best_severe_errors": 0,
+      "epoch10_macro_f1": 0.4749645115498774,
+      "amp_skipped_updates_through_epoch10": 7
+    },
+    {
+      "fold": 3,
+      "best_epoch": 7,
+      "best_macro_f1": 0.5972447287141008,
+      "best_accuracy": 0.754950495049505,
+      "best_qwk": 0.591910864419231,
+      "best_per_class_f1": [0.4, 0.631578947368421, 0.8339100346020761, 0.5234899328859061],
+      "best_severe_errors": 0,
+      "epoch10_macro_f1": 0.502603021978022,
+      "amp_skipped_updates_through_epoch10": 7
+    },
+    {
+      "fold": 4,
+      "best_epoch": 4,
+      "best_macro_f1": 0.5301278060720386,
+      "best_accuracy": 0.8039702233250621,
+      "best_qwk": 0.6408807372564944,
+      "best_per_class_f1": [0.0, 0.6542056074766355, 0.8701517706576728, 0.5961538461538461],
+      "best_severe_errors": 0,
+      "epoch10_macro_f1": 0.5038287109715681,
+      "amp_skipped_updates_through_epoch10": 7
+    }
+  ],
+  "provisional_best_so_far_cv5": {
+    "fold0_final_selected": 0.7623856925078064,
+    "folds1_4_first10_selected": [0.564052089742717, 0.6043886972622505, 0.5972447287141008, 0.5301278060720386],
+    "mean": 0.6116398028597827,
+    "sample_sd": 0.08929293924753756,
+    "min": 0.5301278060720386
+  },
+  "status": "INTERMEDIATE_ONLY",
+  "warning": "Folds 1-4 are best-so-far through epoch 10, not completed selected checkpoints. This is not the final CV5 result."
+}

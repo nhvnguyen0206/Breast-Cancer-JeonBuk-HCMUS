@@ -1,0 +1,122 @@
+{
+  "audit": "PASS",
+  "arm": "auggeo_dropout50",
+  "assignments_sha256": "43daa86936ee7b1bae1b200836fb1afdfe0c8294c7c865d8f5758bf989f12a9a",
+  "independent_test": false,
+  "folds": [
+    {
+      "fold": 0,
+      "best_epoch": 18,
+      "best": {
+        "num_samples": 404,
+        "accuracy": 0.8366336633663366,
+        "macro_f1": 0.7983834791246115,
+        "per_class_f1": [1.0, 0.6666666666666666, 0.8932038834951457, 0.6336633663366337],
+        "qwk": 0.6632653061224489,
+        "confusion_matrix": [[1, 0, 0, 0], [0, 29, 11, 0], [0, 18, 276, 17], [0, 0, 20, 32]],
+        "severe_errors": 0
+      },
+      "epoch50": {"num_samples": 404, "accuracy": 0.8242574257425742, "macro_f1": 0.5661339637136076, "per_class_f1": [0.2, 0.5633802816901409, 0.8969889064976229, 0.6041666666666666], "qwk": 0.6284635964074146, "severe_errors": 2, "confusion_matrix": [[1, 0, 0, 0], [6, 20, 14, 0], [2, 11, 283, 15], [0, 0, 23, 29]]},
+      "max_probability_sum_error": 1.3718675972995698e-07,
+      "wandb_id": "wpzkdvb6",
+      "wandb_url": "https://wandb.ai/TN_Mammo_BreastDensity/HCMUS-paper1/runs/wpzkdvb6",
+      "wandb_state": "finished"
+    },
+    {
+      "fold": 1,
+      "best_epoch": 28,
+      "best": {
+        "num_samples": 403,
+        "accuracy": 0.826302729528536,
+        "macro_f1": 0.5569145774565054,
+        "per_class_f1": [0.18181818181818182, 0.5555555555555556, 0.9033280507131537, 0.5869565217391305],
+        "qwk": 0.6644223448800914,
+        "confusion_matrix": [[1, 0, 0, 0], [9, 20, 10, 0], [0, 13, 285, 14], [0, 0, 24, 27]],
+        "severe_errors": 0
+      },
+      "epoch50": {"num_samples": 403, "accuracy": 0.8312655086848635, "macro_f1": 0.5065407099979652, "per_class_f1": [0.0, 0.53125, 0.9079563182527302, 0.5869565217391305], "qwk": 0.6458333333333333, "severe_errors": 0, "confusion_matrix": [[0, 1, 0, 0], [8, 17, 14, 0], [0, 7, 291, 14], [0, 0, 24, 27]]},
+      "max_probability_sum_error": 1.1562519830476958e-07,
+      "wandb_id": "v0sftza9",
+      "wandb_url": "https://wandb.ai/TN_Mammo_BreastDensity/HCMUS-paper1/runs/v0sftza9",
+      "wandb_state": "finished"
+    },
+    {
+      "fold": 2,
+      "best_epoch": 19,
+      "best": {
+        "num_samples": 403,
+        "accuracy": 0.8064516129032258,
+        "macro_f1": 0.7578714627951798,
+        "per_class_f1": [1.0, 0.6122448979591837, 0.8737864077669902, 0.5454545454545454],
+        "qwk": 0.6007468373723518,
+        "confusion_matrix": [[1, 0, 0, 0], [0, 30, 9, 0], [0, 29, 270, 12], [0, 0, 28, 24]],
+        "severe_errors": 0
+      },
+      "epoch50": {"num_samples": 403, "accuracy": 0.8312655086848635, "macro_f1": 0.5143179060495753, "per_class_f1": [0.0, 0.6, 0.9017160686427457, 0.5555555555555556], "qwk": 0.6223367602877539, "severe_errors": 0, "confusion_matrix": [[0, 1, 0, 0], [4, 21, 14, 0], [0, 9, 289, 13], [0, 0, 27, 25]]},
+      "max_probability_sum_error": 1.319377815889311e-07,
+      "wandb_id": "5l4utdd3",
+      "wandb_url": "https://wandb.ai/TN_Mammo_BreastDensity/HCMUS-paper1/runs/5l4utdd3",
+      "wandb_state": "finished"
+    },
+    {
+      "fold": 3,
+      "best_epoch": 34,
+      "best": {
+        "num_samples": 404,
+        "accuracy": 0.8193069306930693,
+        "macro_f1": 0.6431991883398867,
+        "per_class_f1": [0.5, 0.631578947368421, 0.886762360446571, 0.5544554455445545],
+        "qwk": 0.6210618286477875,
+        "confusion_matrix": [[1, 1, 0, 0], [1, 24, 14, 0], [0, 12, 278, 21], [0, 0, 24, 28]],
+        "severe_errors": 0
+      },
+      "epoch50": {"num_samples": 404, "accuracy": 0.8094059405940595, "macro_f1": 0.597626582278481, "per_class_f1": [0.4, 0.6075949367088608, 0.8829113924050633, 0.5], "qwk": 0.5974220933844083, "severe_errors": 0, "confusion_matrix": [[1, 1, 0, 0], [2, 24, 13, 0], [0, 15, 279, 17], [0, 0, 29, 23]]},
+      "max_probability_sum_error": 1.3189074365982378e-07,
+      "wandb_id": "j28m5ozw",
+      "wandb_url": "https://wandb.ai/TN_Mammo_BreastDensity/HCMUS-paper1/runs/j28m5ozw",
+      "wandb_state": "finished"
+    },
+    {
+      "fold": 4,
+      "best_epoch": 25,
+      "best": {
+        "num_samples": 403,
+        "accuracy": 0.8238213399503722,
+        "macro_f1": 0.6046581572769953,
+        "per_class_f1": [0.4, 0.5915492957746479, 0.89375, 0.5333333333333333],
+        "qwk": 0.6079712825571677,
+        "confusion_matrix": [[1, 0, 0, 0], [3, 21, 15, 0], [0, 11, 286, 14], [0, 0, 28, 24]],
+        "severe_errors": 0
+      },
+      "epoch50": {"num_samples": 403, "accuracy": 0.8138957816377171, "macro_f1": 0.4927971948391869, "per_class_f1": [0.0, 0.5753424657534246, 0.8847352024922118, 0.5111111111111111], "qwk": 0.5503102078466964, "severe_errors": 0, "confusion_matrix": [[0, 1, 0, 0], [0, 21, 18, 0], [0, 12, 284, 15], [0, 0, 29, 23]]},
+      "max_probability_sum_error": 1.180634541242398e-07,
+      "wandb_id": "1gkkuyw7",
+      "wandb_url": "https://wandb.ai/TN_Mammo_BreastDensity/HCMUS-paper1/runs/1gkkuyw7",
+      "wandb_state": "finished"
+    }
+  ],
+  "aggregate": {
+    "macro_f1_mean": 0.6722053729986357,
+    "macro_f1_sample_sd": 0.10241526502859342,
+    "accuracy_mean": 0.8225032552883079,
+    "accuracy_sample_sd": 0.01099674381699917,
+    "qwk_mean": 0.6314935199159695,
+    "qwk_sample_sd": 0.030418860238281855,
+    "per_class_f1_mean": [0.6163636363636363, 0.6115190726648949, 0.8901661404843721, 0.5707726424816395],
+    "per_class_f1_sample_sd": [0.3686248737139982, 0.04175790271300992, 0.010899417128181323, 0.04039220196178214],
+    "bcd_f1_mean": 0.6908192852103022,
+    "epoch50_macro_f1_mean": 0.5354832713757631,
+    "epoch50_macro_f1_sample_sd": 0.04446628416375178
+  },
+  "pooled_descriptive": {
+    "num_samples": 2017,
+    "accuracy": 0.8225086762518592,
+    "macro_f1": 0.6231995177712097,
+    "per_class_f1": [0.4166666666666667, 0.6138613861386139, 0.8902361199744735, 0.5720338983050848],
+    "qwk": 0.6322803136550343,
+    "confusion_matrix": [[5, 1, 0, 0], [13, 124, 59, 0], [0, 83, 1395, 78], [0, 0, 124, 135]],
+    "severe_errors": 0
+  },
+  "unique_cases": 2017,
+  "support": [6, 196, 1556, 259]
+}

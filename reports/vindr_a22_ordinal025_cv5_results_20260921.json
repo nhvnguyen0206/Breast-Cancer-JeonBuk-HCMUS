@@ -1,0 +1,62 @@
+{
+  "audit": "PASS",
+  "arm": "auggeo_dropout30_ordinal025",
+  "assignments_sha256": "43daa86936ee7b1bae1b200836fb1afdfe0c8294c7c865d8f5758bf989f12a9a",
+  "independent_test": false,
+  "folds": [
+    {
+      "fold": 0, "best_epoch": 22,
+      "best": {"num_samples": 404, "accuracy": 0.801980198019802, "macro_f1": 0.7718528368794326, "per_class_f1": [1.0, 0.5957446808510638, 0.8666666666666667, 0.625], "qwk": 0.6258219875891451, "confusion_matrix": [[1,0,0,0],[0,28,12,0],[0,26,260,25],[0,0,17,35]], "severe_errors": 0},
+      "epoch50": {"num_samples": 404, "accuracy": 0.8242574257425742, "macro_f1": 0.517913231794505, "per_class_f1": [0.0,0.6075949367088608,0.889589905362776,0.574468085106383], "qwk": 0.5985331989698802, "severe_errors": 0, "confusion_matrix": [[0,1,0,0],[0,24,16,0],[0,14,282,15],[0,0,25,27]]},
+      "max_probability_sum_error": 1.3301132639753632e-07, "wandb_id": "gdne1bkg", "wandb_url": "https://wandb.ai/TN_Mammo_BreastDensity/HCMUS-paper1/runs/gdne1bkg", "wandb_state": "finished"
+    },
+    {
+      "fold": 1, "best_epoch": 10,
+      "best": {"num_samples": 403, "accuracy": 0.8486352357320099, "macro_f1": 0.5662064283375747, "per_class_f1": [0.0,0.7631578947368421,0.9035369774919614,0.5981308411214953], "qwk": 0.6721436097144611, "confusion_matrix": [[0,1,0,0],[0,29,10,0],[0,7,281,24],[0,0,19,32]], "severe_errors": 0},
+      "epoch50": {"num_samples": 403, "accuracy": 0.8511166253101737, "macro_f1": 0.5328740970277759, "per_class_f1": [0.0,0.6153846153846154,0.9093701996927803,0.6067415730337079], "qwk": 0.6188164076047544, "severe_errors": 0, "confusion_matrix": [[0,1,0,0],[0,20,19,0],[0,5,296,11],[0,0,24,27]]},
+      "max_probability_sum_error": 1.2497895340857212e-07, "wandb_id": "8jhy78kl", "wandb_url": "https://wandb.ai/TN_Mammo_BreastDensity/HCMUS-paper1/runs/8jhy78kl", "wandb_state": "finished"
+    },
+    {
+      "fold": 2, "best_epoch": 9,
+      "best": {"num_samples": 403, "accuracy": 0.8213399503722084, "macro_f1": 0.6818484501183237, "per_class_f1": [0.6666666666666666,0.6732673267326733,0.887459807073955,0.5], "qwk": 0.6155313871398589, "confusion_matrix": [[1,0,0,0],[1,34,4,0],[0,27,276,8],[0,1,31,20]], "severe_errors": 1},
+      "epoch50": {"num_samples": 403, "accuracy": 0.8560794044665012, "macro_f1": 0.5566067860710717, "per_class_f1": [0.0,0.725,0.9105180533751962,0.5909090909090909], "qwk": 0.6633249791144529, "severe_errors": 0, "confusion_matrix": [[0,1,0,0],[0,29,10,0],[0,11,290,10],[0,0,26,26]]},
+      "max_probability_sum_error": 1.215026941281394e-07, "wandb_id": "43295usj", "wandb_url": "https://wandb.ai/TN_Mammo_BreastDensity/HCMUS-paper1/runs/43295usj", "wandb_state": "finished"
+    },
+    {
+      "fold": 3, "best_epoch": 15,
+      "best": {"num_samples": 404, "accuracy": 0.8217821782178217, "macro_f1": 0.5932826717184764, "per_class_f1": [0.3333333333333333,0.5555555555555556,0.8924050632911392,0.5918367346938775], "qwk": 0.6284393122652836, "confusion_matrix": [[1,1,0,0],[3,20,16,0],[0,12,282,17],[0,0,23,29]], "severe_errors": 0},
+      "epoch50": {"num_samples": 404, "accuracy": 0.8366336633663366, "macro_f1": 0.5114238193198232, "per_class_f1": [0.0,0.5970149253731343,0.9032258064516129,0.5454545454545454], "qwk": 0.5757594204663055, "severe_errors": 1, "confusion_matrix": [[0,2,0,0],[0,20,19,0],[0,5,294,12],[0,1,27,24]]},
+      "max_probability_sum_error": 1.200680515012209e-07, "wandb_id": "p96msbjn", "wandb_url": "https://wandb.ai/TN_Mammo_BreastDensity/HCMUS-paper1/runs/p96msbjn", "wandb_state": "finished"
+    },
+    {
+      "fold": 4, "best_epoch": 29,
+      "best": {"num_samples": 403, "accuracy": 0.7915632754342432, "macro_f1": 0.5626107987105006, "per_class_f1": [0.25,0.5217391304347826,0.8708609271523179,0.6078431372549019], "qwk": 0.6298386038577615, "confusion_matrix": [[1,0,0,0],[6,24,9,0],[0,29,263,19],[0,0,21,31]], "severe_errors": 0},
+      "epoch50": {"num_samples": 403, "accuracy": 0.8039702233250621, "macro_f1": 0.4809810079878982, "per_class_f1": [0.0,0.4722222222222222,0.8832807570977917,0.5684210526315789], "qwk": 0.577293306955933, "severe_errors": 0, "confusion_matrix": [[0,1,0,0],[4,17,18,0],[0,15,280,16],[0,0,25,27]]},
+      "max_probability_sum_error": 1.1316964787511097e-07, "wandb_id": "dj5bsgwx", "wandb_url": "https://wandb.ai/TN_Mammo_BreastDensity/HCMUS-paper1/runs/dj5bsgwx", "wandb_state": "finished"
+    }
+  ],
+  "aggregate": {
+    "macro_f1_mean": 0.6351602371528616,
+    "macro_f1_sample_sd": 0.09032778546087743,
+    "accuracy_mean": 0.817060167555217,
+    "accuracy_sample_sd": 0.02188090403208417,
+    "qwk_mean": 0.634354980113302,
+    "qwk_sample_sd": 0.02185470728213066,
+    "per_class_f1_mean": [0.45,0.6218929176621835,0.8841858883352081,0.5845621426140549],
+    "per_class_f1_sample_sd": [0.38908725099762503,0.09709567530383835,0.015306989831558648,0.04890043520774272],
+    "bcd_f1_mean": 0.6968803162038155,
+    "epoch50_macro_f1_mean": 0.5199597884402148,
+    "epoch50_macro_f1_sample_sd": 0.027866549347421284
+  },
+  "pooled_descriptive": {"num_samples": 2017, "accuracy": 0.8170550322260783, "macro_f1": 0.6235708990753562, "per_class_f1": [0.4,0.6206896551724138,0.8844155844155844,0.5891783567134269], "qwk": 0.633629428239954, "confusion_matrix": [[4,2,0,0],[10,135,51,0],[0,101,1362,93],[0,1,111,147]], "severe_errors": 1},
+  "unique_cases": 2017,
+  "support": [6,196,1556,259],
+  "criteria": {"mean_macro_f1_ge_070": false, "sample_sd_le_005": false, "min_fold_ge_065": false},
+  "decision": "REJECT_RETAIN_A5",
+  "summary_wandb": {
+    "id": "uytf37nh",
+    "url": "https://wandb.ai/TN_Mammo_BreastDensity/HCMUS-paper1/runs/uytf37nh",
+    "state": "finished",
+    "api_readback_verified": true
+  }
+}
