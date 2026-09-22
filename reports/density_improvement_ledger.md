@@ -4481,3 +4481,12 @@ snapshot then launched the fixed fold2/3 full50 screen as array job1084, W&B
 offline IDs 5hzj03pt/oeauqr5m. Audits1086/1087 wait on afterok:1084;
 folds0/1/4 stay locked until all registered two-fold gates pass. Exact receipt:
 vindr_a51_bilateral_spatial_relation_launch_20260923.md.
+
+A51 matched first10 selects epoch7 on both folds: Macro .6155977/.7281705,
+mean .6718841, sampleSD .0796010 and minimum .6155977. Versus matched A42 it
+slightly raises fold2 and lowers fold3, leaving mean effectively unchanged but
+narrowing spread. Fold2/fold3 have 1/10 and 5/10 positive-A epochs; the
+zero-initialized bilateral output projection is non-zero in both checkpoints.
+Fold2 Macro, SD, B/C/D mean and QWK mean gates currently fail. Continue
+unchanged to20/40/50; folds0/1/4 remain locked. Exact report:
+vindr_a51_bilateral_spatial_relation_first10_20260923.md.
