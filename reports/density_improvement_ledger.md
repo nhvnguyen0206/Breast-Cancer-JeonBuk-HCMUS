@@ -4449,3 +4449,11 @@ fold has an epoch >=.72, while epoch20 itself is .5032574/.6734800. Continue
 unchanged to40/50 and audits; folds0/1/4 remain locked. A51 was preregistered
 before this inspection. Exact report:
 vindr_a50_projection_adapters_first20_20260923.md.
+
+A50 matched first40 moves fold3 to epoch40 Macro .7268970, the first A50 epoch
+above .72, with B/C/D .7469738 and QWK .6814056. Fold2 remains selected at
+epoch4 Macro .5391099 with zero A-positive epochs. Aggregate mean is .6330034,
+sampleSD .1327855 and minimum .5391099; fold2 Macro, SD and QWK mean gates
+fail despite passing B/C/D gates. Continue unchanged to50 and queued audits;
+folds0/1/4 remain locked. Exact report:
+vindr_a50_projection_adapters_first40_20260923.md.
