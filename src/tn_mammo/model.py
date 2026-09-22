@@ -24,6 +24,7 @@ CONVNEXT_LOCAL_GLOBAL_PERVIEW_AUX_MIXSTYLE_ARCHITECTURE = "convnext_tiny_local_g
 CONVNEXT_DUAL_ENDPOINT_GATE_ARCHITECTURE = "convnext_tiny_hybrid_spatial_dual_endpoint_gate_multitask_v14"
 CONVNEXT_FINE_D_EXPERT_ARCHITECTURE = "convnext_tiny_hybrid_spatial_a_gate_fine_d_expert_v15"
 CONVNEXT_RNG_ISOLATED_FINE_D_EXPERT_ARCHITECTURE = "convnext_tiny_hybrid_spatial_a_gate_fine_d_expert_rngisolated_v16"
+CONVNEXT_PROJECTION_ADAPTER_ARCHITECTURE = "convnext_tiny_hybrid_spatial_a_gate_projection_adapters_v17"
 
 
 class ExamMixStyle(nn.Module):
@@ -77,6 +78,26 @@ class ExamMixStyle(nn.Module):
         mixed_mean = mixing * mean + (1 - mixing) * paired_mean
         mixed_std = mixing * std + (1 - mixing) * paired_std
         return (normalized * mixed_std + mixed_mean).to(feature_maps.dtype)
+
+
+class ProjectionFeatureAdapter(nn.Module):
+    """Small deterministic residual adapter for one mammographic projection."""
+
+    def __init__(self, channels=384, bottleneck=96):
+        super().__init__()
+        if (not isinstance(channels, int) or isinstance(channels, bool)
+                or channels <= 0 or not isinstance(bottleneck, int)
+                or isinstance(bottleneck, bool) or bottleneck <= 0):
+            raise ValueError("Projection adapter dimensions must be positive integers")
+        self.norm = nn.GroupNorm(1, channels)
+        self.down = nn.Conv2d(channels, bottleneck, kernel_size=1)
+        self.activation = nn.GELU()
+        self.up = nn.Conv2d(bottleneck, channels, kernel_size=1)
+        nn.init.zeros_(self.up.weight)
+        nn.init.zeros_(self.up.bias)
+
+    def forward(self, feature_map):
+        return self.up(self.activation(self.down(self.norm(feature_map))))
 
 
 class PairFusion(nn.Module):
@@ -408,7 +429,8 @@ class DensityModel(nn.Module):
                  ordinal_initial_gap=1.0, backbone="densenet121",
                  view_auxiliary=False, mixstyle_probability=0.0,
                  mixstyle_alpha=0.1, fine_d_expert=False,
-                 isolate_fine_d_rng=False):
+                 isolate_fine_d_rng=False, projection_adapters=False,
+                 projection_adapter_dim=96):
         super().__init__()
         if not isinstance(view_auxiliary, bool):
             raise ValueError("view_auxiliary must be boolean")
@@ -416,6 +438,12 @@ class DensityModel(nn.Module):
             raise ValueError("fine_d_expert must be boolean")
         if not isinstance(isolate_fine_d_rng, bool):
             raise ValueError("isolate_fine_d_rng must be boolean")
+        if not isinstance(projection_adapters, bool):
+            raise ValueError("projection_adapters must be boolean")
+        if (not isinstance(projection_adapter_dim, int)
+                or isinstance(projection_adapter_dim, bool)
+                or projection_adapter_dim <= 0):
+            raise ValueError("projection_adapter_dim must be a positive integer")
         if backbone not in {"densenet121", "convnext_tiny"}:
             raise ValueError("Unknown backbone")
         if fusion not in {"hierarchical_relational", "view_token_attention",
@@ -473,12 +501,23 @@ class DensityModel(nn.Module):
             )
         if isolate_fine_d_rng and not fine_d_expert:
             raise ValueError("Fine-D RNG isolation requires fine_d_expert")
+        if projection_adapters and not (
+                backbone == "convnext_tiny"
+                and fusion == "hybrid_relational_spatial_attention"
+                and primary_head == "a_gate_hierarchical"):
+            raise ValueError(
+                "Projection adapters require the ConvNeXt hybrid spatial A-gate arm"
+            )
+        if projection_adapters and fine_d_expert:
+            raise ValueError("Projection adapters and fine_d_expert are separate arms")
         self.backbone = backbone
         self.fusion = fusion
         self.primary_head = primary_head
         self.view_auxiliary = bool(view_auxiliary)
         self.fine_d_expert = bool(fine_d_expert)
         self.isolate_fine_d_rng = bool(isolate_fine_d_rng)
+        self.projection_adapters_enabled = bool(projection_adapters)
+        self.projection_adapter_dim = int(projection_adapter_dim)
         self.exam_mixstyle = mixstyle
         if fusion == "local_global_view_attention":
             if self.exam_mixstyle.probability:
@@ -492,6 +531,8 @@ class DensityModel(nn.Module):
             self.architecture = CONVNEXT_MULTISCALE_A_GATE_ARCHITECTURE
         elif fusion == "multiscale_view_token_attention":
             self.architecture = CONVNEXT_MULTISCALE_ARCHITECTURE
+        elif self.projection_adapters_enabled:
+            self.architecture = CONVNEXT_PROJECTION_ADAPTER_ARCHITECTURE
         elif self.isolate_fine_d_rng:
             self.architecture = CONVNEXT_RNG_ISOLATED_FINE_D_EXPERT_ARCHITECTURE
         elif self.fine_d_expert:
@@ -612,6 +653,15 @@ class DensityModel(nn.Module):
                 self.d_fine_head = nn.Linear(384, 1)
                 nn.init.zeros_(self.d_fine_head.weight)
                 nn.init.zeros_(self.d_fine_head.bias)
+        if self.projection_adapters_enabled:
+            # A50 starts bit-exact to A42: adapter construction cannot advance
+            # the shared CPU RNG, and each residual projection starts at zero.
+            with torch.random.fork_rng(devices=[], enabled=True):
+                self.projection_feature_adapters = nn.ModuleList([
+                    ProjectionFeatureAdapter(
+                        channels=384, bottleneck=self.projection_adapter_dim
+                    ) for _ in range(2)
+                ])
 
     def forward(self, views):
         if views.ndim != 5 or tuple(views.shape[1:3]) != (4, 3):
@@ -621,7 +671,7 @@ class DensityModel(nn.Module):
         fine_maps = None
         if (self.fusion in {"multiscale_view_token_attention",
                             "local_global_view_attention"}
-                or self.fine_d_expert):
+                or self.fine_d_expert or self.projection_adapters_enabled):
             maps = flattened_views
             for index, block in enumerate(self.features):
                 maps = block(maps)
@@ -629,6 +679,16 @@ class DensityModel(nn.Module):
                     fine_maps = maps.reshape(
                         batch, 4, 384, maps.shape[-2], maps.shape[-1]
                     )
+                    if self.projection_adapters_enabled:
+                        # CC views (0,2) share one adapter and MLO views (1,3)
+                        # share the other; laterality remains fully shared.
+                        fine_maps = torch.stack([
+                            fine_maps[:, view] + self.projection_feature_adapters[
+                                view % 2
+                            ](fine_maps[:, view])
+                            for view in range(4)
+                        ], dim=1)
+                        maps = fine_maps.flatten(0, 1)
                     if self.fusion in {"multiscale_view_token_attention",
                                        "local_global_view_attention"}:
                         fine_maps = self.exam_mixstyle(fine_maps)

@@ -84,6 +84,14 @@ def audit(run_dirs, split_root, arm, wandb_project=None):
         isolate_fine_d_rng = config["model"].get("isolate_fine_d_rng", False)
         require(isinstance(isolate_fine_d_rng, bool),
                 f"Fold {fold}: isolate_fine_d_rng must be boolean")
+        projection_adapters = config["model"].get("projection_adapters", False)
+        require(isinstance(projection_adapters, bool),
+                f"Fold {fold}: projection_adapters must be boolean")
+        projection_adapter_dim = config["model"].get("projection_adapter_dim", 96)
+        require(isinstance(projection_adapter_dim, int)
+                and not isinstance(projection_adapter_dim, bool)
+                and projection_adapter_dim > 0,
+                f"Fold {fold}: invalid projection_adapter_dim")
         require(not isinstance(mixstyle_probability, bool)
                 and isinstance(mixstyle_probability, (int, float))
                 and math.isfinite(float(mixstyle_probability))
@@ -130,6 +138,16 @@ def audit(run_dirs, split_root, arm, wandb_project=None):
                     f"Fold {fold}: Fine-D RNG isolation requires fine_d_expert")
             expected_architecture = (
                 "convnext_tiny_hybrid_spatial_a_gate_fine_d_expert_rngisolated_v16"
+            )
+        if projection_adapters:
+            require(not fine_d_expert and projection_adapter_dim == 96,
+                    f"Fold {fold}: projection adapter screening contract mismatch")
+            require((backbone, fusion, primary_head, ordinal_gap)
+                    == ("convnext_tiny", "hybrid_relational_spatial_attention",
+                        "a_gate_hierarchical", 1.0),
+                    f"Fold {fold}: projection adapter architecture mismatch")
+            expected_architecture = (
+                "convnext_tiny_hybrid_spatial_a_gate_projection_adapters_v17"
             )
         require(expected_architecture is not None
                 and checkpoint["architecture"] == expected_architecture,

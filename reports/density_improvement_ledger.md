@@ -4416,3 +4416,11 @@ RNG control is validated but the learned fine-D treatment is not beneficial.
 A50 implementation is now unlocked, with training still locked pending its
 registered validation/preflight. Exact report:
 vindr_a49_rng_isolated_fine_d_twofold_final_20260923.md.
+
+A50 projection-adapter implementation validation passes: local complete tests
+82/82, focused tests 20/20 locally and on Atlas, production 512 outputs finite,
+and A42/A50 shared state, initial outputs and CPU/CUDA RNG streams bit-exact.
+CUDA parity job1076 passes on RTX5090; real-cache preflight job1077 passes with
+finite loss/gradient and 2.7185 GiB peak allocation. A50 adds 149,952 parameters
+over A42. The folds2/3 screen is unlocked; folds0/1/4 remain locked. Exact
+report: vindr_a50_implementation_validation_20260923.md.
