@@ -4432,3 +4432,12 @@ vanishes after epoch7. Non-zero CC/MLO adapter projection norms confirm that
 the new path is learning, while the current generalization is worse than the
 matched A42/A49 control. Continue unchanged to20/40/50; folds0/1/4 remain
 locked. Exact report: vindr_a50_projection_adapters_first10_20260923.md.
+
+A51 is preregistered after A50 first10 but before first20/final inspection. It
+retains A42 and adds a zero-initialized orientation-aligned bilateral spatial
+relation residual: right maps are flipped, CC/MLO pairs use symmetric mean,
+absolute-difference and product maps, and one shared spatial block feeds the
+exam feature. A 100-exam label-free cache audit confirms opposing L/R CC
+orientation. A51 is a single model and remains locked until A50 completes and
+audits. Exact report:
+vindr_a51_bilateral_spatial_relation_preregistration_20260923.md.
