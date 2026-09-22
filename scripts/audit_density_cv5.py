@@ -92,6 +92,18 @@ def audit(run_dirs, split_root, arm, wandb_project=None):
                 and not isinstance(projection_adapter_dim, bool)
                 and projection_adapter_dim > 0,
                 f"Fold {fold}: invalid projection_adapter_dim")
+        bilateral_spatial_relation = config["model"].get(
+            "bilateral_spatial_relation", False
+        )
+        require(isinstance(bilateral_spatial_relation, bool),
+                f"Fold {fold}: bilateral_spatial_relation must be boolean")
+        bilateral_relation_dim = config["model"].get(
+            "bilateral_relation_dim", 256
+        )
+        require(isinstance(bilateral_relation_dim, int)
+                and not isinstance(bilateral_relation_dim, bool)
+                and bilateral_relation_dim > 0,
+                f"Fold {fold}: invalid bilateral_relation_dim")
         require(not isinstance(mixstyle_probability, bool)
                 and isinstance(mixstyle_probability, (int, float))
                 and math.isfinite(float(mixstyle_probability))
@@ -148,6 +160,17 @@ def audit(run_dirs, split_root, arm, wandb_project=None):
                     f"Fold {fold}: projection adapter architecture mismatch")
             expected_architecture = (
                 "convnext_tiny_hybrid_spatial_a_gate_projection_adapters_v17"
+            )
+        if bilateral_spatial_relation:
+            require(not fine_d_expert and not projection_adapters
+                    and bilateral_relation_dim == 256,
+                    f"Fold {fold}: bilateral relation screening contract mismatch")
+            require((backbone, fusion, primary_head, ordinal_gap)
+                    == ("convnext_tiny", "hybrid_relational_spatial_attention",
+                        "a_gate_hierarchical", 1.0),
+                    f"Fold {fold}: bilateral relation architecture mismatch")
+            expected_architecture = (
+                "convnext_tiny_hybrid_spatial_a_gate_bilateral_relation_v18"
             )
         require(expected_architecture is not None
                 and checkpoint["architecture"] == expected_architecture,

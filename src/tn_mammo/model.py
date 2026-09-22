@@ -25,6 +25,7 @@ CONVNEXT_DUAL_ENDPOINT_GATE_ARCHITECTURE = "convnext_tiny_hybrid_spatial_dual_en
 CONVNEXT_FINE_D_EXPERT_ARCHITECTURE = "convnext_tiny_hybrid_spatial_a_gate_fine_d_expert_v15"
 CONVNEXT_RNG_ISOLATED_FINE_D_EXPERT_ARCHITECTURE = "convnext_tiny_hybrid_spatial_a_gate_fine_d_expert_rngisolated_v16"
 CONVNEXT_PROJECTION_ADAPTER_ARCHITECTURE = "convnext_tiny_hybrid_spatial_a_gate_projection_adapters_v17"
+CONVNEXT_BILATERAL_RELATION_ARCHITECTURE = "convnext_tiny_hybrid_spatial_a_gate_bilateral_relation_v18"
 
 
 class ExamMixStyle(nn.Module):
@@ -98,6 +99,64 @@ class ProjectionFeatureAdapter(nn.Module):
 
     def forward(self, feature_map):
         return self.up(self.activation(self.down(self.norm(feature_map))))
+
+
+class BilateralSpatialRelation(nn.Module):
+    """Orientation-aligned, side-symmetric relation between matching views."""
+
+    def __init__(self, channels=768, hidden_dim=256, grid_size=4):
+        super().__init__()
+        dimensions = (channels, hidden_dim, grid_size)
+        if any(not isinstance(value, int) or isinstance(value, bool)
+               or value <= 0 for value in dimensions):
+            raise ValueError("Bilateral relation dimensions must be positive integers")
+        self.channels = channels
+        self.hidden_dim = hidden_dim
+        self.grid_size = grid_size
+        self.relation_projection = nn.Conv2d(
+            channels * 3, hidden_dim, kernel_size=1
+        )
+        self.relation_norm = nn.GroupNorm(1, hidden_dim)
+        self.depthwise = nn.Conv2d(
+            hidden_dim, hidden_dim, kernel_size=3, padding=1,
+            groups=hidden_dim,
+        )
+        self.spatial_norm = nn.GroupNorm(1, hidden_dim)
+        self.activation = nn.GELU()
+        self.to_exam = nn.Linear(hidden_dim * 2, channels)
+        nn.init.zeros_(self.to_exam.weight)
+        nn.init.zeros_(self.to_exam.bias)
+
+    def forward(self, feature_maps):
+        if (feature_maps.ndim != 5 or feature_maps.shape[1] != 4
+                or feature_maps.shape[2] != self.channels):
+            raise ValueError(
+                f"Expected four {self.channels}-channel feature maps"
+            )
+        batch = feature_maps.shape[0]
+        maps = F.adaptive_avg_pool2d(
+            feature_maps.flatten(0, 1), self.grid_size
+        ).reshape(batch, 4, self.channels, self.grid_size, self.grid_size)
+        # Canonical cache images point left/right breasts in opposite
+        # directions. Flip right maps before comparing the same projection.
+        right = torch.flip(maps[:, 2:], dims=(-1,))
+        relations = []
+        for left_index, right_index in ((0, 0), (1, 1)):
+            left_map, right_map = maps[:, left_index], right[:, right_index]
+            relations.append(torch.cat((
+                (left_map + right_map) / 2,
+                (left_map - right_map).abs(),
+                left_map * right_map,
+            ), dim=1))
+        relations = torch.stack(relations, dim=1).flatten(0, 1)
+        encoded = self.relation_projection(relations)
+        encoded = self.relation_norm(self.activation(encoded))
+        encoded = self.spatial_norm(
+            encoded + self.activation(self.depthwise(encoded))
+        )
+        pooled = F.adaptive_avg_pool2d(encoded, 1).flatten(1)
+        pooled = pooled.reshape(batch, 2, self.hidden_dim).flatten(1)
+        return self.to_exam(pooled)
 
 
 class PairFusion(nn.Module):
@@ -430,7 +489,8 @@ class DensityModel(nn.Module):
                  view_auxiliary=False, mixstyle_probability=0.0,
                  mixstyle_alpha=0.1, fine_d_expert=False,
                  isolate_fine_d_rng=False, projection_adapters=False,
-                 projection_adapter_dim=96):
+                 projection_adapter_dim=96, bilateral_spatial_relation=False,
+                 bilateral_relation_dim=256):
         super().__init__()
         if not isinstance(view_auxiliary, bool):
             raise ValueError("view_auxiliary must be boolean")
@@ -440,10 +500,16 @@ class DensityModel(nn.Module):
             raise ValueError("isolate_fine_d_rng must be boolean")
         if not isinstance(projection_adapters, bool):
             raise ValueError("projection_adapters must be boolean")
+        if not isinstance(bilateral_spatial_relation, bool):
+            raise ValueError("bilateral_spatial_relation must be boolean")
         if (not isinstance(projection_adapter_dim, int)
                 or isinstance(projection_adapter_dim, bool)
                 or projection_adapter_dim <= 0):
             raise ValueError("projection_adapter_dim must be a positive integer")
+        if (not isinstance(bilateral_relation_dim, int)
+                or isinstance(bilateral_relation_dim, bool)
+                or bilateral_relation_dim <= 0):
+            raise ValueError("bilateral_relation_dim must be a positive integer")
         if backbone not in {"densenet121", "convnext_tiny"}:
             raise ValueError("Unknown backbone")
         if fusion not in {"hierarchical_relational", "view_token_attention",
@@ -510,6 +576,17 @@ class DensityModel(nn.Module):
             )
         if projection_adapters and fine_d_expert:
             raise ValueError("Projection adapters and fine_d_expert are separate arms")
+        if bilateral_spatial_relation and not (
+                backbone == "convnext_tiny"
+                and fusion == "hybrid_relational_spatial_attention"
+                and primary_head == "a_gate_hierarchical"):
+            raise ValueError(
+                "Bilateral spatial relation requires the ConvNeXt hybrid spatial A-gate arm"
+            )
+        if bilateral_spatial_relation and (fine_d_expert or projection_adapters):
+            raise ValueError(
+                "Bilateral spatial relation, fine_d_expert and projection adapters are separate arms"
+            )
         self.backbone = backbone
         self.fusion = fusion
         self.primary_head = primary_head
@@ -518,6 +595,10 @@ class DensityModel(nn.Module):
         self.isolate_fine_d_rng = bool(isolate_fine_d_rng)
         self.projection_adapters_enabled = bool(projection_adapters)
         self.projection_adapter_dim = int(projection_adapter_dim)
+        self.bilateral_spatial_relation_enabled = bool(
+            bilateral_spatial_relation
+        )
+        self.bilateral_relation_dim = int(bilateral_relation_dim)
         self.exam_mixstyle = mixstyle
         if fusion == "local_global_view_attention":
             if self.exam_mixstyle.probability:
@@ -531,6 +612,8 @@ class DensityModel(nn.Module):
             self.architecture = CONVNEXT_MULTISCALE_A_GATE_ARCHITECTURE
         elif fusion == "multiscale_view_token_attention":
             self.architecture = CONVNEXT_MULTISCALE_ARCHITECTURE
+        elif self.bilateral_spatial_relation_enabled:
+            self.architecture = CONVNEXT_BILATERAL_RELATION_ARCHITECTURE
         elif self.projection_adapters_enabled:
             self.architecture = CONVNEXT_PROJECTION_ADAPTER_ARCHITECTURE
         elif self.isolate_fine_d_rng:
@@ -662,6 +745,14 @@ class DensityModel(nn.Module):
                         channels=384, bottleneck=self.projection_adapter_dim
                     ) for _ in range(2)
                 ])
+        if self.bilateral_spatial_relation_enabled:
+            # A51 starts bit-exact to A42 and does not advance its RNG stream.
+            with torch.random.fork_rng(devices=[], enabled=True):
+                self.bilateral_spatial_relation = BilateralSpatialRelation(
+                    channels=self.feature_dim,
+                    hidden_dim=self.bilateral_relation_dim,
+                    grid_size=spatial_grid_size,
+                )
 
     def forward(self, views):
         if views.ndim != 5 or tuple(views.shape[1:3]) != (4, 3):
@@ -736,6 +827,12 @@ class DensityModel(nn.Module):
                                  maps.shape[-2], maps.shape[-1])
                 )
                 exam = exam + self.spatial_residual_logit.sigmoid() * spatial
+                if self.bilateral_spatial_relation_enabled:
+                    bilateral_spatial = self.bilateral_spatial_relation(
+                        maps.reshape(batch, 4, self.feature_dim,
+                                     maps.shape[-2], maps.shape[-1])
+                    )
+                    exam = exam + bilateral_spatial
         elif self.fusion == "view_token_attention":
             exam = self.attention_fusion(features)
         exam = self.exam_norm(exam)

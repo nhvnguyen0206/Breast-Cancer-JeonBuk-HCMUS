@@ -4466,3 +4466,10 @@ fold3 late but worsen fold sensitivity and never recover fold2 A. A51
 implementation is now unlocked, with training locked pending validation and
 real-cache preflight. Exact report:
 vindr_a50_projection_adapters_twofold_final_20260923.md.
+
+A51 local implementation validation passes: syntax, focused tests 25/25,
+complete tests 87/87, bit-exact A42 state/initial output/RNG, staged gradients,
+side symmetry, strict roundtrip and finite production 512 forward. It adds
+987,648 parameters to A42. Atlas payload transfer is awaiting explicit user
+authorization; no remote validation or training has been claimed. Exact
+report: vindr_a51_local_implementation_validation_20260923.md.

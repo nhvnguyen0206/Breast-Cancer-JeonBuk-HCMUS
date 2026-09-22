@@ -91,6 +91,16 @@ def audit(run_dir, split_root, arm, fold, wandb_project=None):
             and not isinstance(projection_adapter_dim, bool)
             and projection_adapter_dim > 0,
             "projection_adapter_dim must be a positive integer")
+    bilateral_spatial_relation = config["model"].get(
+        "bilateral_spatial_relation", False
+    )
+    require(isinstance(bilateral_spatial_relation, bool),
+            "bilateral_spatial_relation must be boolean")
+    bilateral_relation_dim = config["model"].get("bilateral_relation_dim", 256)
+    require(isinstance(bilateral_relation_dim, int)
+            and not isinstance(bilateral_relation_dim, bool)
+            and bilateral_relation_dim > 0,
+            "bilateral_relation_dim must be a positive integer")
     require(not isinstance(mixstyle_probability, bool)
             and isinstance(mixstyle_probability, (int, float))
             and math.isfinite(float(mixstyle_probability))
@@ -146,6 +156,17 @@ def audit(run_dir, split_root, arm, fold, wandb_project=None):
                 "Projection adapter architecture mismatch")
         expected_architecture = (
             "convnext_tiny_hybrid_spatial_a_gate_projection_adapters_v17"
+        )
+    if bilateral_spatial_relation:
+        require(not fine_d_expert and not projection_adapters
+                and bilateral_relation_dim == 256,
+                "Bilateral relation screening contract mismatch")
+        require((backbone, fusion, primary_head, ordinal_gap)
+                == ("convnext_tiny", "hybrid_relational_spatial_attention",
+                    "a_gate_hierarchical", 1.0),
+                "Bilateral relation architecture mismatch")
+        expected_architecture = (
+            "convnext_tiny_hybrid_spatial_a_gate_bilateral_relation_v18"
         )
     require(expected_architecture is not None
             and checkpoint["architecture"] == expected_architecture,
