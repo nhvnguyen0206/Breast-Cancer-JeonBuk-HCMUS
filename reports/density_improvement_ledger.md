@@ -4490,3 +4490,11 @@ zero-initialized bilateral output projection is non-zero in both checkpoints.
 Fold2 Macro, SD, B/C/D mean and QWK mean gates currently fail. Continue
 unchanged to20/40/50; folds0/1/4 remain locked. Exact report:
 vindr_a51_bilateral_spatial_relation_first10_20260923.md.
+
+A51 matched first20 remains selected at epoch7 on both folds with Macro
+.6155977/.7281705, mean .6718841, sampleSD .0796010 and minimum .6155977.
+Fold3 accumulates 8/20 positive-A and 3/20 Macro>=.72 epochs, but fold2 remains
+at one isolated positive-A epoch and no epoch>=.72. Fold2 Macro, SD, B/C/D mean
+and QWK mean gates still fail. Continue unchanged to40/50; folds0/1/4 remain
+locked. Exact report:
+vindr_a51_bilateral_spatial_relation_first20_20260923.md.
