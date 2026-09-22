@@ -4391,3 +4391,12 @@ Neither fold has any epoch >=.72. RNG isolation preserves A42-like A-positive
 counts (1/20 and 4/20) and improves A48's SD, but fold3 B/C/D regression leaves
 mean, B/C/D and QWK below A42. Finish40/50 and audit; folds0/1/4 remain locked.
 Exact report: vindr_a49_rng_isolated_fine_d_first20_20260923.md.
+
+A50 preregistered before A49 final inspection as A42 plus zero-initialized
+projection-specific 384-channel CC/MLO residual adapters before the shared
+upper ConvNeXt stage. It targets encoder negative transfer after A43--A49
+exhausted token fusion, per-view supervision, MixStyle and D-specific heads.
+A50 is locked until A49 finishes/audits; then it must prove bit-exact A42
+initialization/RNG and pass the unchanged folds2/3 gates before expansion.
+Architecture v17; single model, no ensemble. Exact report:
+vindr_a50_projection_adapters_preregistration_20260923.md.
