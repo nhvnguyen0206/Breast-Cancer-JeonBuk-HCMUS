@@ -4441,3 +4441,11 @@ exam feature. A 100-exam label-free cache audit confirms opposing L/R CC
 orientation. A51 is a single model and remains locked until A50 completes and
 audits. Exact report:
 vindr_a51_bilateral_spatial_relation_preregistration_20260923.md.
+
+A50 matched first20 is unchanged from first10: selected epochs4/3 give Macro
+.5391099/.6981955, mean .6186527, sampleSD .1124905 and minimum .5391099.
+Fold2 remains 0/20 A-positive; fold3 is 5/20 with longest streak three. Neither
+fold has an epoch >=.72, while epoch20 itself is .5032574/.6734800. Continue
+unchanged to40/50 and audits; folds0/1/4 remain locked. A51 was preregistered
+before this inspection. Exact report:
+vindr_a50_projection_adapters_first20_20260923.md.
