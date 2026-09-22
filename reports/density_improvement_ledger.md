@@ -4400,3 +4400,10 @@ A50 is locked until A49 finishes/audits; then it must prove bit-exact A42
 initialization/RNG and pass the unchanged folds2/3 gates before expansion.
 Architecture v17; single model, no ensemble. Exact report:
 vindr_a50_projection_adapters_preregistration_20260923.md.
+
+A49 matched first40 remains selected at epochs5/7: Macro .6062836/.7112440,
+mean .6587638, sampleSD .0742182 and minimum .6062836. Neither fold has any
+epoch >=.72. Against matched A42, mean is .0491761 lower, minimum .0710309
+lower, B/C/D mean .0100126 lower and QWK mean .0118243 lower; only B/C/D and
+QWK minima improve. Finish50 and queued audits1073/1074; folds0/1/4 remain
+locked. Exact report: vindr_a49_rng_isolated_fine_d_first40_20260923.md.
