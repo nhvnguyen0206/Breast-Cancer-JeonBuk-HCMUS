@@ -65,3 +65,14 @@ tensors with production batch shape `[2,4,3,512,512]`. Forward, backward,
 gradient clipping and optimizer update completed under AMP. Loss and outputs
 were finite; AMP recovered after three skipped scale updates, peak allocated
 memory was 2.719 GiB, and the preflight result was PASS.
+
+An additional CUDA parity audit was performed against the immutable snapshot.
+Corrected job 1072 ran on `NVIDIA GeForce RTX 5090` and proved all of the
+following bit-exact under matched seeds: shared A42/A49 state, construction CPU
+RNG, post-forward CPU RNG, post-forward CUDA RNG, and all three output tensors.
+The fine-D head also received a finite non-zero gradient (L1 `57.2041588`).
+The initial audit invocation, job 1071, reached the parity checks but stopped in
+the diagnostic-only gradient check because its class weights remained on CPU;
+moving that diagnostic loss to CUDA fixed the invocation without any model or
+training change. Verification script SHA256:
+`06d25c6f3a6140edcb72de3cfa4a04e20c9739f929877df41f6d6e473e291ed3`.

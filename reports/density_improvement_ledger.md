@@ -4369,3 +4369,10 @@ backward and optimizer update. Two-fold screen job1069 tasks2-3 then launched
 for 50 epochs each on RTX5090 with Vesta excluded and W&B offline IDs
 7msbizh4/7mch95l6. Folds0/1/4 stay locked. Exact launch report:
 vindr_a49_rng_isolated_fine_d_launch_20260923.md.
+
+A49 CUDA parity audit job1072 passes on RTX5090: shared state, construction CPU
+RNG, post-forward CPU/CUDA RNG and every initial output tensor are bit-exact
+against A42 under matched seeds; the fine-D head gradient is finite/non-zero.
+Diagnostic job1071 had first stopped only because its loss weights were on CPU;
+the corrected audit moved that diagnostic object to CUDA, with no model or
+training change. Evidence is recorded in the A49 implementation report.
