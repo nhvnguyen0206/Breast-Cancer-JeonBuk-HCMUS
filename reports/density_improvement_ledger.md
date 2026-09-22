@@ -4384,3 +4384,10 @@ return exactly to A42's 1/10 and 4/10. Relative to A42, mean is still .0136062
 lower and B/C/D mean .0070309 lower because fold3 regresses. No final gate is
 claimed; continue unchanged to20/40/50 with folds0/1/4 locked. Exact report:
 vindr_a49_rng_isolated_fine_d_first10_20260923.md.
+
+A49 matched first20 is unchanged from first10: selected epochs5/7 give Macro
+.6062836/.7112440, mean .6587638, sampleSD .0742182 and minimum .6062836.
+Neither fold has any epoch >=.72. RNG isolation preserves A42-like A-positive
+counts (1/20 and 4/20) and improves A48's SD, but fold3 B/C/D regression leaves
+mean, B/C/D and QWK below A42. Finish40/50 and audit; folds0/1/4 remain locked.
+Exact report: vindr_a49_rng_isolated_fine_d_first20_20260923.md.
