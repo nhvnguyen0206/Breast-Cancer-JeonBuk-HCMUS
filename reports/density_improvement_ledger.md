@@ -4407,3 +4407,12 @@ epoch >=.72. Against matched A42, mean is .0491761 lower, minimum .0710309
 lower, B/C/D mean .0100126 lower and QWK mean .0118243 lower; only B/C/D and
 QWK minima improve. Finish50 and queued audits1073/1074; folds0/1/4 remain
 locked. Exact report: vindr_a49_rng_isolated_fine_d_first40_20260923.md.
+
+A49 folds2/3 complete50 and audit jobs1073/1074 both PASS with empty errors.
+Final selected epochs5/7 remain Macro .6062836/.7112440, mean .6587638,
+sampleSD .0742182 and minimum .6062836. Both Macro gates, SD, B/C/D mean and
+QWK mean fail; B/C/D and QWK minima pass. Reject A49 without folds0/1/4.
+RNG control is validated but the learned fine-D treatment is not beneficial.
+A50 implementation is now unlocked, with training still locked pending its
+registered validation/preflight. Exact report:
+vindr_a49_rng_isolated_fine_d_twofold_final_20260923.md.

@@ -72,4 +72,6 @@ adapter norms. Scores remain selected DEV, not an independent test. Final CV5
 acceptance remains mean Macro-F1 >= `.72`, sample SD <= `.03` and minimum
 fold >= `.65`.
 
-Status: preregistered; implementation and launch locked until A49 final audit.
+Status: preregistered; implementation unlocked after audited A49 rejection.
+Training remains locked pending all registered implementation validations and
+real-cache RTX5090 preflight.
