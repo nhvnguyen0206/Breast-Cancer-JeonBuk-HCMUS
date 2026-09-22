@@ -4424,3 +4424,11 @@ CUDA parity job1076 passes on RTX5090; real-cache preflight job1077 passes with
 finite loss/gradient and 2.7185 GiB peak allocation. A50 adds 149,952 parameters
 over A42. The folds2/3 screen is unlocked; folds0/1/4 remain locked. Exact
 report: vindr_a50_implementation_validation_20260923.md.
+
+A50 matched first10 selects fold2 epoch4 Macro .5391099 and fold3 epoch3 Macro
+.6981955: mean .6186527, sampleSD .1124905 and minimum .5391099. Neither fold
+reaches .72. Fold2 has zero A-positive epochs; fold3 has 4/10, but the signal
+vanishes after epoch7. Non-zero CC/MLO adapter projection norms confirm that
+the new path is learning, while the current generalization is worse than the
+matched A42/A49 control. Continue unchanged to20/40/50; folds0/1/4 remain
+locked. Exact report: vindr_a50_projection_adapters_first10_20260923.md.
