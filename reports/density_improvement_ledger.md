@@ -4523,3 +4523,11 @@ gates now pass, but fold2 Macro and SD fail decisively; the bilateral branch
 helps the stronger fold more. Finish50 and queued audits1086/1087, with
 folds0/1/4 locked. A52 was preregistered before this inspection. Exact report:
 vindr_a51_bilateral_spatial_relation_first40_20260923.md.
+
+A51 folds2/3 complete50 and audit jobs1086/1087 both PASS. Final selected
+epochs7/40 give Macro .6155977/.7404835, mean .6780406, sampleSD .0883076 and
+minimum .6155977. B/C/D and QWK mean/minimum pass, but fold2 Macro and SD fail.
+Reject A51 without folds0/1/4: its learned bilateral branch amplifies the
+stronger fold and leaves only one isolated positive-A epoch on fold2. Audited
+rejection unlocks A52 Atlas/CUDA/preflight validation, not training. Exact
+report: vindr_a51_bilateral_spatial_relation_twofold_final_20260923.md.

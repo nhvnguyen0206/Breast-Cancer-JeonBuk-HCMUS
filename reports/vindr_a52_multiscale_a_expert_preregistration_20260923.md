@@ -62,5 +62,6 @@ and streak, epochs at/above `.72`, and the expert output-projection norm. These
 are selected DEV estimates, not an independent test. Final CV5 acceptance
 remains mean Macro-F1 >= `.72`, sample SD <= `.03`, and minimum fold >= `.65`.
 
-Status: conditionally preregistered; implementation may be validated locally,
-but Atlas deployment/training is locked behind completed audited A51 rejection.
+Status: preregistered and locally validated. Audited A51 rejection satisfies
+the dependency, so Atlas hash/tests, CUDA parity and real-cache RTX5090
+preflight are unlocked. Training remains locked until every validation passes.

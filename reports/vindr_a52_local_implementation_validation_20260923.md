@@ -38,5 +38,5 @@ model and produces one normalized four-class distribution.
 - config: `2d52bd67d9eb5c99ce35b02a6db96c1d91c37414c9ee55cce351371a823e5a14`
 - tests: `0a8dc1c9965c9ef7603ea721189fcdfd1b9ed9259792a3e27f4cd0ab718cfa34`
 
-Atlas deployment, CUDA parity, real-cache preflight and training remain locked
-until A51 completes, both registered audits pass, and A51 is formally rejected.
+Audited A51 rejection now unlocks Atlas deployment, CUDA parity and real-cache
+RTX5090 preflight. Training remains locked until those checks pass.

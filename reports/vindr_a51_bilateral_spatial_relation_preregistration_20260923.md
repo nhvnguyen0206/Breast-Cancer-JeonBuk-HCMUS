@@ -74,7 +74,6 @@ bilateral-branch norms. Results are selected DEV, not independent-test
 estimates. Final CV5 acceptance remains mean Macro-F1 >= `.72`, sample SD <=
 `.03` and minimum fold >= `.65`.
 
-Status: preregistered and validation-complete. Local tests, remote hash/test
-checks, CUDA parity job `1082` and real-cache RTX5090 preflight job `1083` all
-PASS. The fold2/3 screen is unlocked; folds0/1/4 remain locked until every
-two-fold gate passes.
+Status: completed and rejected after audit jobs `1086/1087` both PASS. Fold2
+Macro-F1 and two-fold SD gates fail; folds0/1/4 remain permanently locked for
+A51. See `vindr_a51_bilateral_spatial_relation_twofold_final_20260923.md`.
