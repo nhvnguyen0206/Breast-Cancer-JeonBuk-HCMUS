@@ -4591,3 +4591,12 @@ The read-only snapshot launched fixed folds2/3 full50 as array job1096, W&B
 offline IDs 6irwuqqa/82som6u1; first updates are finite. Audits1098/1099 wait
 on afterok:1096 and folds0/1/4 remain gate-locked. Exact receipt:
 vindr_a53_multiscale_a_replacement_launch_20260923.md.
+
+A53 matched first10 selects epoch9/3 at Macro .5441666/.6742866, mean
+.6092266, sampleSD .0920087 and minimum .5441666. Fold2 has zero positive-A
+epochs and fold3 only two; neither reaches .72. Macro, SD, B/C/D mean/min and
+QWK mean gates currently fail. The direct replacement does not reproduce
+A43, suggesting its multiscale representation needs the dense multi-task
+supervision it received in A43 rather than only the rare A-gate gradient.
+Continue unchanged to20/40/50 and audits; folds0/1/4 remain locked. Exact
+report: vindr_a53_multiscale_a_replacement_first10_20260923.md.
