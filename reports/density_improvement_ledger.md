@@ -4538,3 +4538,10 @@ The read-only snapshot launched fixed folds2/3 as full50 array job1090, W&B
 offline IDs o8i8cjx5/q6zqr8i4; first updates are finite. Audits1092/1093 wait
 on afterok:1090. Folds0/1/4 remain gate-locked. Exact receipt:
 vindr_a52_multiscale_a_expert_launch_20260923.md.
+
+A52 matched first10 selects epoch7 on both folds at Macro .6034620/.7180493,
+mean .6607556, sampleSD .0810255 and minimum .6034620. The expert output head
+is non-zero, but fold2 still has one isolated positive-A epoch and neither fold
+reaches .72. Both scores trail matched A42; Macro, SD, B/C/D mean/min and QWK
+mean gates currently fail. Continue unchanged to20/40/50; folds0/1/4 remain
+locked. Exact report: vindr_a52_multiscale_a_expert_first10_20260923.md.
