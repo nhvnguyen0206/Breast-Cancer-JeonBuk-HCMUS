@@ -4560,3 +4560,11 @@ B/C/D, ordinal and binary heads. One shared backbone and one normalized output
 keep it a single model. Training is locked behind audited A52 rejection; fixed
 fold2/3 gates are unchanged. Exact report:
 vindr_a53_multiscale_a_replacement_preregistration_20260923.md.
+
+A53 local implementation passes syntax, focused tests34/34, full tests96/96,
+bit-exact A42 shared state/construction and post-forward RNG, exact initial
+ordinal/binary and conditional B/C/D outputs, intentional A-output change,
+first-step gradients through A gate/multi-scale Transformer, strict roundtrip
+and production512 forward. It adds2,081,280 parameters. Atlas/CUDA/preflight
+and training remain locked behind audited A52 rejection. Exact report:
+vindr_a53_local_implementation_validation_20260923.md.

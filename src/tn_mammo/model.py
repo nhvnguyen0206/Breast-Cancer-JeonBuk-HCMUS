@@ -27,6 +27,7 @@ CONVNEXT_RNG_ISOLATED_FINE_D_EXPERT_ARCHITECTURE = "convnext_tiny_hybrid_spatial
 CONVNEXT_PROJECTION_ADAPTER_ARCHITECTURE = "convnext_tiny_hybrid_spatial_a_gate_projection_adapters_v17"
 CONVNEXT_BILATERAL_RELATION_ARCHITECTURE = "convnext_tiny_hybrid_spatial_a_gate_bilateral_relation_v18"
 CONVNEXT_MULTISCALE_A_EXPERT_ARCHITECTURE = "convnext_tiny_hybrid_spatial_a_gate_multiscale_a_expert_v19"
+CONVNEXT_MULTISCALE_A_REPLACEMENT_ARCHITECTURE = "convnext_tiny_hybrid_bcd_multiscale_a_gate_v20"
 
 
 class ExamMixStyle(nn.Module):
@@ -491,7 +492,8 @@ class DensityModel(nn.Module):
                  mixstyle_alpha=0.1, fine_d_expert=False,
                  isolate_fine_d_rng=False, projection_adapters=False,
                  projection_adapter_dim=96, bilateral_spatial_relation=False,
-                 bilateral_relation_dim=256, multiscale_a_expert=False):
+                 bilateral_relation_dim=256, multiscale_a_expert=False,
+                 multiscale_a_replacement=False):
         super().__init__()
         if not isinstance(view_auxiliary, bool):
             raise ValueError("view_auxiliary must be boolean")
@@ -505,6 +507,8 @@ class DensityModel(nn.Module):
             raise ValueError("bilateral_spatial_relation must be boolean")
         if not isinstance(multiscale_a_expert, bool):
             raise ValueError("multiscale_a_expert must be boolean")
+        if not isinstance(multiscale_a_replacement, bool):
+            raise ValueError("multiscale_a_replacement must be boolean")
         if (not isinstance(projection_adapter_dim, int)
                 or isinstance(projection_adapter_dim, bool)
                 or projection_adapter_dim <= 0):
@@ -603,6 +607,19 @@ class DensityModel(nn.Module):
             raise ValueError(
                 "Multi-scale A expert and prior treatment branches are separate arms"
             )
+        if multiscale_a_replacement and not (
+                backbone == "convnext_tiny"
+                and fusion == "hybrid_relational_spatial_attention"
+                and primary_head == "a_gate_hierarchical"):
+            raise ValueError(
+                "Multi-scale A replacement requires the ConvNeXt hybrid spatial A-gate arm"
+            )
+        if multiscale_a_replacement and (
+                fine_d_expert or projection_adapters
+                or bilateral_spatial_relation or multiscale_a_expert):
+            raise ValueError(
+                "Multi-scale A replacement and prior treatment branches are separate arms"
+            )
         self.backbone = backbone
         self.fusion = fusion
         self.primary_head = primary_head
@@ -616,6 +633,7 @@ class DensityModel(nn.Module):
         )
         self.bilateral_relation_dim = int(bilateral_relation_dim)
         self.multiscale_a_expert = bool(multiscale_a_expert)
+        self.multiscale_a_replacement = bool(multiscale_a_replacement)
         self.exam_mixstyle = mixstyle
         if fusion == "local_global_view_attention":
             if self.exam_mixstyle.probability:
@@ -629,6 +647,8 @@ class DensityModel(nn.Module):
             self.architecture = CONVNEXT_MULTISCALE_A_GATE_ARCHITECTURE
         elif fusion == "multiscale_view_token_attention":
             self.architecture = CONVNEXT_MULTISCALE_ARCHITECTURE
+        elif self.multiscale_a_replacement:
+            self.architecture = CONVNEXT_MULTISCALE_A_REPLACEMENT_ARCHITECTURE
         elif self.multiscale_a_expert:
             self.architecture = CONVNEXT_MULTISCALE_A_EXPERT_ARCHITECTURE
         elif self.bilateral_spatial_relation_enabled:
@@ -772,10 +792,10 @@ class DensityModel(nn.Module):
                     hidden_dim=self.bilateral_relation_dim,
                     grid_size=spatial_grid_size,
                 )
-        if self.multiscale_a_expert:
-            # A52 is an RNG-isolated, zero-output residual on A42's A logit.
-            # It observes the same multi-scale maps as A43 without replacing
-            # A42's representation for any prediction head.
+        if self.multiscale_a_expert or self.multiscale_a_replacement:
+            # A52 adds a zero-output A residual; A53 instead applies A42's
+            # existing A gate directly to this multi-scale representation.
+            # Both treatment modules are RNG-isolated from the A42 path.
             with torch.random.fork_rng(devices=[], enabled=True):
                 self.a_multiscale_fusion = MultiScaleViewTokenFusion(
                     fine_dim=384, coarse_dim=self.feature_dim,
@@ -786,9 +806,10 @@ class DensityModel(nn.Module):
                     output_dropout=dropout,
                 )
                 self.a_expert_norm = nn.LayerNorm(self.feature_dim)
-                self.a_expert_head = nn.Linear(self.feature_dim, 1)
-                nn.init.zeros_(self.a_expert_head.weight)
-                nn.init.zeros_(self.a_expert_head.bias)
+                if self.multiscale_a_expert:
+                    self.a_expert_head = nn.Linear(self.feature_dim, 1)
+                    nn.init.zeros_(self.a_expert_head.weight)
+                    nn.init.zeros_(self.a_expert_head.bias)
 
     def forward(self, views):
         if views.ndim != 5 or tuple(views.shape[1:3]) != (4, 3):
@@ -799,7 +820,8 @@ class DensityModel(nn.Module):
         if (self.fusion in {"multiscale_view_token_attention",
                             "local_global_view_attention"}
                 or self.fine_d_expert or self.projection_adapters_enabled
-                or self.multiscale_a_expert):
+                or self.multiscale_a_expert
+                or self.multiscale_a_replacement):
             maps = flattened_views
             for index, block in enumerate(self.features):
                 maps = block(maps)
@@ -877,8 +899,7 @@ class DensityModel(nn.Module):
             flat_logits = self.flat_head(exam)
             ordinal_logits = self.ordinal_score(exam) + self.ordinal_bias
         elif self.primary_head == "a_gate_hierarchical":
-            a_logit = self.a_gate(exam).float()
-            if self.multiscale_a_expert:
+            if self.multiscale_a_expert or self.multiscale_a_replacement:
                 devices = ([torch.cuda.current_device()]
                            if fine_maps.is_cuda else [])
                 with torch.random.fork_rng(devices=devices, enabled=True):
@@ -887,10 +908,17 @@ class DensityModel(nn.Module):
                         maps.reshape(batch, 4, self.feature_dim,
                                      maps.shape[-2], maps.shape[-1]),
                     )
-                    a_residual = self.a_expert_head(
-                        self.a_expert_norm(expert_exam)
-                    ).float()
-                a_logit = a_logit + a_residual
+                    expert_exam = self.a_expert_norm(expert_exam)
+                    if self.multiscale_a_expert:
+                        a_residual = self.a_expert_head(expert_exam).float()
+                    else:
+                        replacement_a_logit = self.a_gate(expert_exam).float()
+            if self.multiscale_a_replacement:
+                a_logit = replacement_a_logit
+            else:
+                a_logit = self.a_gate(exam).float()
+                if self.multiscale_a_expert:
+                    a_logit = a_logit + a_residual
             bcd_logits = self.bcd_head(exam).float()
             if self.fine_d_expert:
                 devices = ([torch.cuda.current_device()]

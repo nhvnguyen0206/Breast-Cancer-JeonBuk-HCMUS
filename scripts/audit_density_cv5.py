@@ -109,6 +109,11 @@ def audit(run_dirs, split_root, arm, wandb_project=None):
         )
         require(isinstance(multiscale_a_expert, bool),
                 f"Fold {fold}: multiscale_a_expert must be boolean")
+        multiscale_a_replacement = config["model"].get(
+            "multiscale_a_replacement", False
+        )
+        require(isinstance(multiscale_a_replacement, bool),
+                f"Fold {fold}: multiscale_a_replacement must be boolean")
         require(not isinstance(mixstyle_probability, bool)
                 and isinstance(mixstyle_probability, (int, float))
                 and math.isfinite(float(mixstyle_probability))
@@ -187,6 +192,18 @@ def audit(run_dirs, split_root, arm, wandb_project=None):
                     f"Fold {fold}: multi-scale A expert architecture mismatch")
             expected_architecture = (
                 "convnext_tiny_hybrid_spatial_a_gate_multiscale_a_expert_v19"
+            )
+        if multiscale_a_replacement:
+            require(not fine_d_expert and not projection_adapters
+                    and not bilateral_spatial_relation
+                    and not multiscale_a_expert,
+                    f"Fold {fold}: multi-scale A replacement screening contract mismatch")
+            require((backbone, fusion, primary_head, ordinal_gap)
+                    == ("convnext_tiny", "hybrid_relational_spatial_attention",
+                        "a_gate_hierarchical", 1.0),
+                    f"Fold {fold}: multi-scale A replacement architecture mismatch")
+            expected_architecture = (
+                "convnext_tiny_hybrid_bcd_multiscale_a_gate_v20"
             )
         require(expected_architecture is not None
                 and checkpoint["architecture"] == expected_architecture,
