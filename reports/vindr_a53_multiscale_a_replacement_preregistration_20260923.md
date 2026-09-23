@@ -66,6 +66,6 @@ above `.72`. These are selected DEV estimates, not independent test results.
 Final CV5 acceptance remains mean Macro-F1 >= `.72`, sample SD <= `.03`, and
 minimum fold >= `.65`.
 
-Status: preregistered and locally validated. Audited A52 rejection satisfies
-the dependency, so Atlas hash/tests, CUDA parity and real-cache RTX5090
-preflight are unlocked. Training remains locked until every validation passes.
+Status: preregistered and validation-complete. Atlas hashes/tests, CUDA parity
+job `1094` and real-cache RTX5090 preflight job `1095` all PASS. The fold2/3
+screen is unlocked; folds0/1/4 remain locked until every two-fold gate passes.
