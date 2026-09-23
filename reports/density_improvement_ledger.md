@@ -4498,3 +4498,12 @@ at one isolated positive-A epoch and no epoch>=.72. Fold2 Macro, SD, B/C/D mean
 and QWK mean gates still fail. Continue unchanged to40/50; folds0/1/4 remain
 locked. Exact report:
 vindr_a51_bilateral_spatial_relation_first20_20260923.md.
+
+A52 is conditionally preregistered after A51 first20 and before its
+first40/final inspection. It is a major single-model change that preserves the
+complete A42 hybrid path and adds A43's multi-scale four-view Transformer only
+as a zero-initialized residual expert for the A-vs-rest logit. B/C/D, ordinal
+and binary predictions stay on A42. Construction/forward RNG must remain
+bit-exact and the fixed folds2/3 gates are unchanged. Training stays locked
+behind completed audited A51 rejection. Exact report:
+vindr_a52_multiscale_a_expert_preregistration_20260923.md.
