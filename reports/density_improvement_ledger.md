@@ -4597,6 +4597,21 @@ A53 matched first10 selects epoch9/3 at Macro .5441666/.6742866, mean
 epochs and fold3 only two; neither reaches .72. Macro, SD, B/C/D mean/min and
 QWK mean gates currently fail. The direct replacement does not reproduce
 A43, suggesting its multiscale representation needs the dense multi-task
-supervision it received in A43 rather than only the rare A-gate gradient.
+supervision it received in A43 rather than only A-vs-rest gradients.
 Continue unchanged to20/40/50 and audits; folds0/1/4 remain locked. Exact
 report: vindr_a53_multiscale_a_replacement_first10_20260923.md.
+
+A53 matched first20 improves to epoch19/16 at Macro .5563545/.7205352, mean
+.6384449, sampleSD .1160933 and minimum .5563545. B/C/D mean/minimum and QWK
+mean/minimum now pass, but fold2 still has zero positive-A epochs; fold2 Macro
+and SD fail. Continue unchanged to40/50 and audits with folds0/1/4 locked.
+Exact report: vindr_a53_multiscale_a_replacement_first20_20260923.md.
+
+A54 is conditionally preregistered after A53 first20 and before first40/final.
+It keeps A53 inference unchanged but adds training-only B/C/D, CORAL and
+binary heads to the multiscale exam vector, optimizing an auxiliary copy of
+the existing multi-task objective at fixed weight .5. This tests whether A43's
+fold2 recovery required dense multi-task supervision of its multiscale
+geometry. It remains one shared-backbone model; Atlas/training stay locked
+behind completed audited A53 rejection. Exact report:
+vindr_a54_multiscale_deep_supervision_preregistration_20260923.md.

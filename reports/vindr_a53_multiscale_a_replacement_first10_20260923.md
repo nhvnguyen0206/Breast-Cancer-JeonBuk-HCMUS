@@ -20,9 +20,8 @@ first ten has positive A F1. Fold3 recovers A only in two consecutive epochs,
 while neither fold reaches Macro-F1 `.72`. This contradicts the narrow
 preregistered explanation that A42's existing A logit alone was suppressing
 the multiscale decision geometry. A more likely mechanism is insufficient
-supervision: in A53 the multiscale representation receives gradients only
-through the rare A gate, whereas A43 trained that representation from all
-heads/tasks.
+supervision: in A53 the multiscale representation receives only A-vs-rest
+gradients, whereas A43 trained that representation from all heads/tasks.
 
 At first10, both fold Macro gates fail; sample SD fails; B/C/D mean and minimum
 fail; QWK mean fails; QWK minimum alone passes. Do not retune or stop the
