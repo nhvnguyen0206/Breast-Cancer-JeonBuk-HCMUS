@@ -4552,3 +4552,11 @@ sampleSD .0898583 and minimum .6034620; the mean gain and expert-norm growth
 occur only on the stronger fold. Fold2 Macro, SD, B/C/D mean/min and QWK mean
 gates fail. Continue unchanged to40/50 and audits; folds0/1/4 remain locked.
 Exact report: vindr_a52_multiscale_a_expert_first20_20260923.md.
+
+A53 is conditionally preregistered after A52 first20 and before first40/final.
+It replaces, rather than residually adjusts, the A-gate input with A43's
+multi-scale four-view representation, while A42 remains the sole source for
+B/C/D, ordinal and binary heads. One shared backbone and one normalized output
+keep it a single model. Training is locked behind audited A52 rejection; fixed
+fold2/3 gates are unchanged. Exact report:
+vindr_a53_multiscale_a_replacement_preregistration_20260923.md.
