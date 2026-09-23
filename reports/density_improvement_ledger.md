@@ -4568,3 +4568,11 @@ first-step gradients through A gate/multi-scale Transformer, strict roundtrip
 and production512 forward. It adds2,081,280 parameters. Atlas/CUDA/preflight
 and training remain locked behind audited A52 rejection. Exact report:
 vindr_a53_local_implementation_validation_20260923.md.
+
+A52 matched first40 remains epoch7/19 at Macro .6034620/.7305408, mean
+.6670014, sampleSD .0898583 and minimum .6034620. Fold2 stays at one isolated
+positive-A epoch and zero epochs>=.72; fold3 adds only one positive-A epoch
+after first20. The learned residual expert does not repair the weak fold.
+Finish50 and audits1092/1093; folds0/1/4 remain locked. A53 was preregistered
+before this inspection. Exact report:
+vindr_a52_multiscale_a_expert_first40_20260923.md.
