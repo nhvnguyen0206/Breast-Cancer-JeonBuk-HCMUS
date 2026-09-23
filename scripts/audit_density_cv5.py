@@ -104,6 +104,11 @@ def audit(run_dirs, split_root, arm, wandb_project=None):
                 and not isinstance(bilateral_relation_dim, bool)
                 and bilateral_relation_dim > 0,
                 f"Fold {fold}: invalid bilateral_relation_dim")
+        multiscale_a_expert = config["model"].get(
+            "multiscale_a_expert", False
+        )
+        require(isinstance(multiscale_a_expert, bool),
+                f"Fold {fold}: multiscale_a_expert must be boolean")
         require(not isinstance(mixstyle_probability, bool)
                 and isinstance(mixstyle_probability, (int, float))
                 and math.isfinite(float(mixstyle_probability))
@@ -171,6 +176,17 @@ def audit(run_dirs, split_root, arm, wandb_project=None):
                     f"Fold {fold}: bilateral relation architecture mismatch")
             expected_architecture = (
                 "convnext_tiny_hybrid_spatial_a_gate_bilateral_relation_v18"
+            )
+        if multiscale_a_expert:
+            require(not fine_d_expert and not projection_adapters
+                    and not bilateral_spatial_relation,
+                    f"Fold {fold}: multi-scale A expert screening contract mismatch")
+            require((backbone, fusion, primary_head, ordinal_gap)
+                    == ("convnext_tiny", "hybrid_relational_spatial_attention",
+                        "a_gate_hierarchical", 1.0),
+                    f"Fold {fold}: multi-scale A expert architecture mismatch")
+            expected_architecture = (
+                "convnext_tiny_hybrid_spatial_a_gate_multiscale_a_expert_v19"
             )
         require(expected_architecture is not None
                 and checkpoint["architecture"] == expected_architecture,

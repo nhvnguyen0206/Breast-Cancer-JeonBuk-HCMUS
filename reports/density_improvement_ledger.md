@@ -4507,3 +4507,11 @@ and binary predictions stay on A42. Construction/forward RNG must remain
 bit-exact and the fixed folds2/3 gates are unchanged. Training stays locked
 behind completed audited A51 rejection. Exact report:
 vindr_a52_multiscale_a_expert_preregistration_20260923.md.
+
+A52 local implementation is validation-complete: syntax, focused tests30/30,
+full tests92/92, bit-exact A42 shared state/initial output/CPU RNG, staged
+expert gradients, strict roundtrip and finite production512 forward all PASS.
+The expert changes only the A gate and adds2,082,049 parameters. Config delta
+is arm, treatment flag and offline W&B only. Atlas/CUDA/preflight/training stay
+locked behind completed audited A51 rejection. Exact report:
+vindr_a52_local_implementation_validation_20260923.md.

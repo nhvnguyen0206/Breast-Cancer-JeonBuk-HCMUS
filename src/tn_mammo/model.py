@@ -26,6 +26,7 @@ CONVNEXT_FINE_D_EXPERT_ARCHITECTURE = "convnext_tiny_hybrid_spatial_a_gate_fine_
 CONVNEXT_RNG_ISOLATED_FINE_D_EXPERT_ARCHITECTURE = "convnext_tiny_hybrid_spatial_a_gate_fine_d_expert_rngisolated_v16"
 CONVNEXT_PROJECTION_ADAPTER_ARCHITECTURE = "convnext_tiny_hybrid_spatial_a_gate_projection_adapters_v17"
 CONVNEXT_BILATERAL_RELATION_ARCHITECTURE = "convnext_tiny_hybrid_spatial_a_gate_bilateral_relation_v18"
+CONVNEXT_MULTISCALE_A_EXPERT_ARCHITECTURE = "convnext_tiny_hybrid_spatial_a_gate_multiscale_a_expert_v19"
 
 
 class ExamMixStyle(nn.Module):
@@ -490,7 +491,7 @@ class DensityModel(nn.Module):
                  mixstyle_alpha=0.1, fine_d_expert=False,
                  isolate_fine_d_rng=False, projection_adapters=False,
                  projection_adapter_dim=96, bilateral_spatial_relation=False,
-                 bilateral_relation_dim=256):
+                 bilateral_relation_dim=256, multiscale_a_expert=False):
         super().__init__()
         if not isinstance(view_auxiliary, bool):
             raise ValueError("view_auxiliary must be boolean")
@@ -502,6 +503,8 @@ class DensityModel(nn.Module):
             raise ValueError("projection_adapters must be boolean")
         if not isinstance(bilateral_spatial_relation, bool):
             raise ValueError("bilateral_spatial_relation must be boolean")
+        if not isinstance(multiscale_a_expert, bool):
+            raise ValueError("multiscale_a_expert must be boolean")
         if (not isinstance(projection_adapter_dim, int)
                 or isinstance(projection_adapter_dim, bool)
                 or projection_adapter_dim <= 0):
@@ -587,6 +590,19 @@ class DensityModel(nn.Module):
             raise ValueError(
                 "Bilateral spatial relation, fine_d_expert and projection adapters are separate arms"
             )
+        if multiscale_a_expert and not (
+                backbone == "convnext_tiny"
+                and fusion == "hybrid_relational_spatial_attention"
+                and primary_head == "a_gate_hierarchical"):
+            raise ValueError(
+                "Multi-scale A expert requires the ConvNeXt hybrid spatial A-gate arm"
+            )
+        if multiscale_a_expert and (
+                fine_d_expert or projection_adapters
+                or bilateral_spatial_relation):
+            raise ValueError(
+                "Multi-scale A expert and prior treatment branches are separate arms"
+            )
         self.backbone = backbone
         self.fusion = fusion
         self.primary_head = primary_head
@@ -599,6 +615,7 @@ class DensityModel(nn.Module):
             bilateral_spatial_relation
         )
         self.bilateral_relation_dim = int(bilateral_relation_dim)
+        self.multiscale_a_expert = bool(multiscale_a_expert)
         self.exam_mixstyle = mixstyle
         if fusion == "local_global_view_attention":
             if self.exam_mixstyle.probability:
@@ -612,6 +629,8 @@ class DensityModel(nn.Module):
             self.architecture = CONVNEXT_MULTISCALE_A_GATE_ARCHITECTURE
         elif fusion == "multiscale_view_token_attention":
             self.architecture = CONVNEXT_MULTISCALE_ARCHITECTURE
+        elif self.multiscale_a_expert:
+            self.architecture = CONVNEXT_MULTISCALE_A_EXPERT_ARCHITECTURE
         elif self.bilateral_spatial_relation_enabled:
             self.architecture = CONVNEXT_BILATERAL_RELATION_ARCHITECTURE
         elif self.projection_adapters_enabled:
@@ -753,6 +772,23 @@ class DensityModel(nn.Module):
                     hidden_dim=self.bilateral_relation_dim,
                     grid_size=spatial_grid_size,
                 )
+        if self.multiscale_a_expert:
+            # A52 is an RNG-isolated, zero-output residual on A42's A logit.
+            # It observes the same multi-scale maps as A43 without replacing
+            # A42's representation for any prediction head.
+            with torch.random.fork_rng(devices=[], enabled=True):
+                self.a_multiscale_fusion = MultiScaleViewTokenFusion(
+                    fine_dim=384, coarse_dim=self.feature_dim,
+                    token_dim=attention_dim, heads=attention_heads,
+                    layers=attention_layers, fine_grid_size=spatial_grid_size,
+                    coarse_grid_size=max(1, spatial_grid_size // 2),
+                    attention_dropout=attention_dropout,
+                    output_dropout=dropout,
+                )
+                self.a_expert_norm = nn.LayerNorm(self.feature_dim)
+                self.a_expert_head = nn.Linear(self.feature_dim, 1)
+                nn.init.zeros_(self.a_expert_head.weight)
+                nn.init.zeros_(self.a_expert_head.bias)
 
     def forward(self, views):
         if views.ndim != 5 or tuple(views.shape[1:3]) != (4, 3):
@@ -762,7 +798,8 @@ class DensityModel(nn.Module):
         fine_maps = None
         if (self.fusion in {"multiscale_view_token_attention",
                             "local_global_view_attention"}
-                or self.fine_d_expert or self.projection_adapters_enabled):
+                or self.fine_d_expert or self.projection_adapters_enabled
+                or self.multiscale_a_expert):
             maps = flattened_views
             for index, block in enumerate(self.features):
                 maps = block(maps)
@@ -841,6 +878,19 @@ class DensityModel(nn.Module):
             ordinal_logits = self.ordinal_score(exam) + self.ordinal_bias
         elif self.primary_head == "a_gate_hierarchical":
             a_logit = self.a_gate(exam).float()
+            if self.multiscale_a_expert:
+                devices = ([torch.cuda.current_device()]
+                           if fine_maps.is_cuda else [])
+                with torch.random.fork_rng(devices=devices, enabled=True):
+                    expert_exam = self.a_multiscale_fusion(
+                        fine_maps,
+                        maps.reshape(batch, 4, self.feature_dim,
+                                     maps.shape[-2], maps.shape[-1]),
+                    )
+                    a_residual = self.a_expert_head(
+                        self.a_expert_norm(expert_exam)
+                    ).float()
+                a_logit = a_logit + a_residual
             bcd_logits = self.bcd_head(exam).float()
             if self.fine_d_expert:
                 devices = ([torch.cuda.current_device()]
