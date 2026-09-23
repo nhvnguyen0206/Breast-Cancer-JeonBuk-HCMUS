@@ -4545,3 +4545,10 @@ is non-zero, but fold2 still has one isolated positive-A epoch and neither fold
 reaches .72. Both scores trail matched A42; Macro, SD, B/C/D mean/min and QWK
 mean gates currently fail. Continue unchanged to20/40/50; folds0/1/4 remain
 locked. Exact report: vindr_a52_multiscale_a_expert_first10_20260923.md.
+
+A52 matched first20 improves fold3 at epoch19 to .7305408, while fold2 stays
+epoch7 .6034620 with one isolated positive-A epoch. Mean is .6670014,
+sampleSD .0898583 and minimum .6034620; the mean gain and expert-norm growth
+occur only on the stronger fold. Fold2 Macro, SD, B/C/D mean/min and QWK mean
+gates fail. Continue unchanged to40/50 and audits; folds0/1/4 remain locked.
+Exact report: vindr_a52_multiscale_a_expert_first20_20260923.md.
