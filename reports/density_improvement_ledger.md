@@ -4531,3 +4531,10 @@ Reject A51 without folds0/1/4: its learned bilateral branch amplifies the
 stronger fold and leaves only one isolated positive-A epoch on fold2. Audited
 rejection unlocks A52 Atlas/CUDA/preflight validation, not training. Exact
 report: vindr_a51_bilateral_spatial_relation_twofold_final_20260923.md.
+
+A52 Atlas hashes match, remote focused tests pass30/30, CUDA parity job1088
+and real-cache preflight job1089 PASS on RTX5090 with worker2/Vesta excluded.
+The read-only snapshot launched fixed folds2/3 as full50 array job1090, W&B
+offline IDs o8i8cjx5/q6zqr8i4; first updates are finite. Audits1092/1093 wait
+on afterok:1090. Folds0/1/4 remain gate-locked. Exact receipt:
+vindr_a52_multiscale_a_expert_launch_20260923.md.

@@ -38,5 +38,23 @@ model and produces one normalized four-class distribution.
 - config: `2d52bd67d9eb5c99ce35b02a6db96c1d91c37414c9ee55cce351371a823e5a14`
 - tests: `0a8dc1c9965c9ef7603ea721189fcdfd1b9ed9259792a3e27f4cd0ab718cfa34`
 
-Audited A51 rejection now unlocks Atlas deployment, CUDA parity and real-cache
-RTX5090 preflight. Training remains locked until those checks pass.
+## Atlas validation
+
+The Atlas snapshot is
+`/slurmshared/Ngoc/code/hcmus-density-multiscale-a-expert-20260923-v1`.
+
+- every registered source, auditor, verifier, config and test hash matches;
+- focused remote tests PASS 30/30;
+- CUDA parity job `1088` COMPLETED with exit `0:0` on
+  `NVIDIA GeForce RTX 5090` (worker3), excluding worker2;
+- CUDA verification PASS: v19 architecture, construction/post-forward CPU and
+  CUDA RNG exact, shared state and all outputs exact, finite non-zero expert
+  output gradient;
+- real-cache preflight job `1089` COMPLETED with exit `0:0` on
+  `NVIDIA GeForce RTX 5090`, excluding worker2;
+- preflight PASS at `[2,4,3,512,512]`, with finite loss `1.2478303909`, finite
+  gradient norm `17.4338321686`, AMP enabled and peak memory
+  `2.7224102020 GiB`.
+
+All registered implementation and execution checks pass. The fold2/3 screen
+is unlocked; folds0/1/4 remain locked behind every two-fold gate.
