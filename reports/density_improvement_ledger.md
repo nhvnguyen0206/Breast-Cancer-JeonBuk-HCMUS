@@ -4515,3 +4515,11 @@ The expert changes only the A gate and adds2,082,049 parameters. Config delta
 is arm, treatment flag and offline W&B only. Atlas/CUDA/preflight/training stay
 locked behind completed audited A51 rejection. Exact report:
 vindr_a52_local_implementation_validation_20260923.md.
+
+A51 matched first40 improves fold3 at epoch40 to .7404835, while fold2 remains
+epoch7 .6155977 with only one isolated positive-A epoch. Aggregate mean is
+.6780406, sampleSD .0883076 and minimum .6155977. B/C/D and QWK mean/minimum
+gates now pass, but fold2 Macro and SD fail decisively; the bilateral branch
+helps the stronger fold more. Finish50 and queued audits1086/1087, with
+folds0/1/4 locked. A52 was preregistered before this inspection. Exact report:
+vindr_a51_bilateral_spatial_relation_first40_20260923.md.
