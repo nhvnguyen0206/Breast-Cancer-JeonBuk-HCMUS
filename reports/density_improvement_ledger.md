@@ -4624,3 +4624,11 @@ forward/backward. It adds only4,616 training-head parameters; auditors enforce
 v21 and auxiliary weight. Atlas/CUDA/preflight/training remain locked behind
 audited A53 rejection. Exact report:
 vindr_a54_local_implementation_validation_20260923.md.
+
+A53 matched first40 is unchanged from first20: selected epochs19/16 give Macro
+.5563545/.7205352, mean .6384449, sampleSD .1160933 and minimum .5563545.
+Fold2 remains at zero positive-A epochs through40; fold3 adds only one after
+first20. B/C/D and QWK gates pass, but fold2 Macro and SD fail decisively.
+Finish50 and audits1098/1099; do not expand folds0/1/4. A54 was preregistered
+before this inspection and remains training-locked. Exact report:
+vindr_a53_multiscale_a_replacement_first40_20260923.md.
