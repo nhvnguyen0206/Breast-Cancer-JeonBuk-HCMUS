@@ -16,12 +16,19 @@ def class_weights(counts, beta):
 class MultiTaskLoss(nn.Module):
     def __init__(self, counts, beta=0.999, gamma=2.0, ordinal=0.5, binary=0.3, neighbor=0.2,
                  focal_normalization="class_mean", label_smoothing=0.0, focal_scale=1.0,
-                 binary_normalization="batch_weight_mean", view_auxiliary=0.0):
+                 binary_normalization="batch_weight_mean", view_auxiliary=0.0,
+                 multiscale_auxiliary=0.0):
         super().__init__()
         self.gamma, self.ordinal, self.binary, self.neighbor = gamma, ordinal, binary, neighbor
         self.view_auxiliary = float(view_auxiliary)
         if not math.isfinite(self.view_auxiliary) or self.view_auxiliary < 0:
             raise ValueError("view_auxiliary must be finite and non-negative")
+        self.multiscale_auxiliary = float(multiscale_auxiliary)
+        if (not math.isfinite(self.multiscale_auxiliary)
+                or self.multiscale_auxiliary < 0):
+            raise ValueError(
+                "multiscale_auxiliary must be finite and non-negative"
+            )
         self.focal_scale = float(focal_scale)
         if not math.isfinite(self.focal_scale) or self.focal_scale <= 0:
             raise ValueError("focal_scale must be finite and positive")
@@ -80,6 +87,70 @@ class MultiTaskLoss(nn.Module):
         total = focal + self.ordinal * ordinal + self.binary * binary + self.neighbor * neighbor
         parts = {"focal": focal.detach(), "ordinal": ordinal.detach(),
                  "binary": binary.detach(), "neighbor": neighbor.detach()}
+        if self.multiscale_auxiliary:
+            required = (
+                "multiscale_aux_flat_logits",
+                "multiscale_aux_ordinal_logits",
+                "multiscale_aux_binary_logits",
+            )
+            if any(key not in outputs for key in required):
+                raise ValueError(
+                    "multiscale auxiliary outputs are required when "
+                    "multiscale_auxiliary is enabled"
+                )
+            auxiliary_logits = outputs["multiscale_aux_flat_logits"].float()
+            auxiliary_probs = auxiliary_logits.softmax(dim=1)
+            auxiliary_pt = auxiliary_probs.gather(
+                1, labels[:, None]
+            ).squeeze(1)
+            if self.label_smoothing:
+                auxiliary_cross_entropy = F.cross_entropy(
+                    auxiliary_logits, labels, reduction="none",
+                    label_smoothing=self.label_smoothing,
+                ) * self.weights[labels]
+            else:
+                auxiliary_cross_entropy = F.cross_entropy(
+                    auxiliary_logits, labels, weight=self.weights,
+                    reduction="none",
+                )
+            auxiliary_focal = (
+                self.focal_scale
+                * ((1 - auxiliary_pt) ** self.gamma
+                   * auxiliary_cross_entropy).mean()
+                / self.focal_denominator
+            )
+            auxiliary_ordinal = F.binary_cross_entropy_with_logits(
+                outputs["multiscale_aux_ordinal_logits"].float(),
+                levels, reduction="none",
+            ).sum(1).mean()
+            if self.binary_normalization == "train_expectation":
+                auxiliary_binary = F.cross_entropy(
+                    outputs["multiscale_aux_binary_logits"].float(),
+                    (labels >= 2).long(), weight=self.binary_weights,
+                    reduction="none",
+                ).mean() / self.binary_denominator
+            else:
+                auxiliary_binary = F.cross_entropy(
+                    outputs["multiscale_aux_binary_logits"].float(),
+                    (labels >= 2).long(), weight=self.binary_weights,
+                )
+            auxiliary_neighbor = (
+                auxiliary_probs * self.cost[labels]
+            ).sum(1).mean()
+            auxiliary = (
+                auxiliary_focal
+                + self.ordinal * auxiliary_ordinal
+                + self.binary * auxiliary_binary
+                + self.neighbor * auxiliary_neighbor
+            )
+            total = total + self.multiscale_auxiliary * auxiliary
+            parts.update({
+                "multiscale_auxiliary": auxiliary.detach(),
+                "multiscale_aux_focal": auxiliary_focal.detach(),
+                "multiscale_aux_ordinal": auxiliary_ordinal.detach(),
+                "multiscale_aux_binary": auxiliary_binary.detach(),
+                "multiscale_aux_neighbor": auxiliary_neighbor.detach(),
+            })
         if self.view_auxiliary:
             if "view_logits" not in outputs:
                 raise ValueError("view_logits are required when view_auxiliary is enabled")

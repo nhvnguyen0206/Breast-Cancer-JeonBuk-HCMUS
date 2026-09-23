@@ -4615,3 +4615,12 @@ fold2 recovery required dense multi-task supervision of its multiscale
 geometry. It remains one shared-backbone model; Atlas/training stay locked
 behind completed audited A53 rejection. Exact report:
 vindr_a54_multiscale_deep_supervision_preregistration_20260923.md.
+
+A54 local implementation passes syntax, focused tests39/39, full tests101/101,
+bit-exact A53 shared state/construction RNG/training primary outputs and
+post-forward RNG, exact evaluation outputs, auxiliary normalization/loss,
+first-step treatment gradients, strict roundtrip and production512
+forward/backward. It adds only4,616 training-head parameters; auditors enforce
+v21 and auxiliary weight. Atlas/CUDA/preflight/training remain locked behind
+audited A53 rejection. Exact report:
+vindr_a54_local_implementation_validation_20260923.md.

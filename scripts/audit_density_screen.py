@@ -109,6 +109,22 @@ def audit(run_dir, split_root, arm, fold, wandb_project=None):
     )
     require(isinstance(multiscale_a_replacement, bool),
             "multiscale_a_replacement must be boolean")
+    multiscale_deep_supervision = config["model"].get(
+        "multiscale_deep_supervision", False
+    )
+    require(isinstance(multiscale_deep_supervision, bool),
+            "multiscale_deep_supervision must be boolean")
+    multiscale_auxiliary = config["loss"].get("multiscale_auxiliary", 0.0)
+    require(not isinstance(multiscale_auxiliary, bool)
+            and isinstance(multiscale_auxiliary, (int, float))
+            and math.isfinite(float(multiscale_auxiliary))
+            and float(multiscale_auxiliary) >= 0,
+            "multiscale_auxiliary must be finite and non-negative")
+    require((multiscale_deep_supervision
+             and float(multiscale_auxiliary) == .5)
+            or (not multiscale_deep_supervision
+                and float(multiscale_auxiliary) == 0),
+            "Multi-scale deep-supervision loss contract mismatch")
     require(not isinstance(mixstyle_probability, bool)
             and isinstance(mixstyle_probability, (int, float))
             and math.isfinite(float(mixstyle_probability))
@@ -196,6 +212,18 @@ def audit(run_dir, split_root, arm, fold, wandb_project=None):
                     "a_gate_hierarchical", 1.0),
                 "Multi-scale A replacement architecture mismatch")
         expected_architecture = "convnext_tiny_hybrid_bcd_multiscale_a_gate_v20"
+    if multiscale_deep_supervision:
+        require(not fine_d_expert and not projection_adapters
+                and not bilateral_spatial_relation and not multiscale_a_expert
+                and not multiscale_a_replacement,
+                "Multi-scale deep-supervision screening contract mismatch")
+        require((backbone, fusion, primary_head, ordinal_gap)
+                == ("convnext_tiny", "hybrid_relational_spatial_attention",
+                    "a_gate_hierarchical", 1.0),
+                "Multi-scale deep-supervision architecture mismatch")
+        expected_architecture = (
+            "convnext_tiny_hybrid_bcd_multiscale_a_gate_deepsup_v21"
+        )
     require(expected_architecture is not None
             and checkpoint["architecture"] == expected_architecture,
             "Architecture mismatch")

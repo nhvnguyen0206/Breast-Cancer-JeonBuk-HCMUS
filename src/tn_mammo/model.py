@@ -28,6 +28,9 @@ CONVNEXT_PROJECTION_ADAPTER_ARCHITECTURE = "convnext_tiny_hybrid_spatial_a_gate_
 CONVNEXT_BILATERAL_RELATION_ARCHITECTURE = "convnext_tiny_hybrid_spatial_a_gate_bilateral_relation_v18"
 CONVNEXT_MULTISCALE_A_EXPERT_ARCHITECTURE = "convnext_tiny_hybrid_spatial_a_gate_multiscale_a_expert_v19"
 CONVNEXT_MULTISCALE_A_REPLACEMENT_ARCHITECTURE = "convnext_tiny_hybrid_bcd_multiscale_a_gate_v20"
+CONVNEXT_MULTISCALE_DEEP_SUPERVISION_ARCHITECTURE = (
+    "convnext_tiny_hybrid_bcd_multiscale_a_gate_deepsup_v21"
+)
 
 
 class ExamMixStyle(nn.Module):
@@ -493,7 +496,8 @@ class DensityModel(nn.Module):
                  isolate_fine_d_rng=False, projection_adapters=False,
                  projection_adapter_dim=96, bilateral_spatial_relation=False,
                  bilateral_relation_dim=256, multiscale_a_expert=False,
-                 multiscale_a_replacement=False):
+                 multiscale_a_replacement=False,
+                 multiscale_deep_supervision=False):
         super().__init__()
         if not isinstance(view_auxiliary, bool):
             raise ValueError("view_auxiliary must be boolean")
@@ -509,6 +513,8 @@ class DensityModel(nn.Module):
             raise ValueError("multiscale_a_expert must be boolean")
         if not isinstance(multiscale_a_replacement, bool):
             raise ValueError("multiscale_a_replacement must be boolean")
+        if not isinstance(multiscale_deep_supervision, bool):
+            raise ValueError("multiscale_deep_supervision must be boolean")
         if (not isinstance(projection_adapter_dim, int)
                 or isinstance(projection_adapter_dim, bool)
                 or projection_adapter_dim <= 0):
@@ -620,6 +626,20 @@ class DensityModel(nn.Module):
             raise ValueError(
                 "Multi-scale A replacement and prior treatment branches are separate arms"
             )
+        if multiscale_deep_supervision and not (
+                backbone == "convnext_tiny"
+                and fusion == "hybrid_relational_spatial_attention"
+                and primary_head == "a_gate_hierarchical"):
+            raise ValueError(
+                "Multi-scale deep supervision requires the ConvNeXt hybrid spatial A-gate arm"
+            )
+        if multiscale_deep_supervision and (
+                fine_d_expert or projection_adapters
+                or bilateral_spatial_relation or multiscale_a_expert
+                or multiscale_a_replacement):
+            raise ValueError(
+                "Multi-scale deep supervision and prior treatment branches are separate arms"
+            )
         self.backbone = backbone
         self.fusion = fusion
         self.primary_head = primary_head
@@ -634,6 +654,7 @@ class DensityModel(nn.Module):
         self.bilateral_relation_dim = int(bilateral_relation_dim)
         self.multiscale_a_expert = bool(multiscale_a_expert)
         self.multiscale_a_replacement = bool(multiscale_a_replacement)
+        self.multiscale_deep_supervision = bool(multiscale_deep_supervision)
         self.exam_mixstyle = mixstyle
         if fusion == "local_global_view_attention":
             if self.exam_mixstyle.probability:
@@ -647,6 +668,8 @@ class DensityModel(nn.Module):
             self.architecture = CONVNEXT_MULTISCALE_A_GATE_ARCHITECTURE
         elif fusion == "multiscale_view_token_attention":
             self.architecture = CONVNEXT_MULTISCALE_ARCHITECTURE
+        elif self.multiscale_deep_supervision:
+            self.architecture = CONVNEXT_MULTISCALE_DEEP_SUPERVISION_ARCHITECTURE
         elif self.multiscale_a_replacement:
             self.architecture = CONVNEXT_MULTISCALE_A_REPLACEMENT_ARCHITECTURE
         elif self.multiscale_a_expert:
@@ -792,10 +815,11 @@ class DensityModel(nn.Module):
                     hidden_dim=self.bilateral_relation_dim,
                     grid_size=spatial_grid_size,
                 )
-        if self.multiscale_a_expert or self.multiscale_a_replacement:
-            # A52 adds a zero-output A residual; A53 instead applies A42's
-            # existing A gate directly to this multi-scale representation.
-            # Both treatment modules are RNG-isolated from the A42 path.
+        if (self.multiscale_a_expert or self.multiscale_a_replacement
+                or self.multiscale_deep_supervision):
+            # A52 adds a zero-output A residual; A53 applies A42's A gate
+            # directly to this representation; A54 adds training-only
+            # multi-task heads. Treatment construction is RNG-isolated.
             with torch.random.fork_rng(devices=[], enabled=True):
                 self.a_multiscale_fusion = MultiScaleViewTokenFusion(
                     fine_dim=384, coarse_dim=self.feature_dim,
@@ -810,6 +834,19 @@ class DensityModel(nn.Module):
                     self.a_expert_head = nn.Linear(self.feature_dim, 1)
                     nn.init.zeros_(self.a_expert_head.weight)
                     nn.init.zeros_(self.a_expert_head.bias)
+                if self.multiscale_deep_supervision:
+                    self.a_multiscale_aux_bcd_head = nn.Linear(
+                        self.feature_dim, 3
+                    )
+                    self.a_multiscale_aux_ordinal_score = nn.Linear(
+                        self.feature_dim, 1, bias=False
+                    )
+                    self.a_multiscale_aux_ordinal_bias = nn.Parameter(
+                        torch.tensor([1.0, 0.0, -1.0])
+                    )
+                    self.a_multiscale_aux_binary_head = nn.Linear(
+                        self.feature_dim, 2
+                    )
 
     def forward(self, views):
         if views.ndim != 5 or tuple(views.shape[1:3]) != (4, 3):
@@ -821,7 +858,8 @@ class DensityModel(nn.Module):
                             "local_global_view_attention"}
                 or self.fine_d_expert or self.projection_adapters_enabled
                 or self.multiscale_a_expert
-                or self.multiscale_a_replacement):
+                or self.multiscale_a_replacement
+                or self.multiscale_deep_supervision):
             maps = flattened_views
             for index, block in enumerate(self.features):
                 maps = block(maps)
@@ -899,7 +937,8 @@ class DensityModel(nn.Module):
             flat_logits = self.flat_head(exam)
             ordinal_logits = self.ordinal_score(exam) + self.ordinal_bias
         elif self.primary_head == "a_gate_hierarchical":
-            if self.multiscale_a_expert or self.multiscale_a_replacement:
+            if (self.multiscale_a_expert or self.multiscale_a_replacement
+                    or self.multiscale_deep_supervision):
                 devices = ([torch.cuda.current_device()]
                            if fine_maps.is_cuda else [])
                 with torch.random.fork_rng(devices=devices, enabled=True):
@@ -913,7 +952,7 @@ class DensityModel(nn.Module):
                         a_residual = self.a_expert_head(expert_exam).float()
                     else:
                         replacement_a_logit = self.a_gate(expert_exam).float()
-            if self.multiscale_a_replacement:
+            if self.multiscale_a_replacement or self.multiscale_deep_supervision:
                 a_logit = replacement_a_logit
             else:
                 a_logit = self.a_gate(exam).float()
@@ -958,6 +997,23 @@ class DensityModel(nn.Module):
             flat_logits, ordinal_logits = self.ordinal_head(exam)
         outputs = {"flat_logits": flat_logits, "ordinal_logits": ordinal_logits,
                    "binary_logits": self.binary_head(exam)}
+        if self.multiscale_deep_supervision and self.training:
+            auxiliary_bcd_log_prob = F.log_softmax(
+                self.a_multiscale_aux_bcd_head(expert_exam).float(), dim=1
+            )
+            outputs.update({
+                "multiscale_aux_flat_logits": torch.cat((
+                    F.logsigmoid(a_logit),
+                    F.logsigmoid(-a_logit) + auxiliary_bcd_log_prob,
+                ), dim=1),
+                "multiscale_aux_ordinal_logits": (
+                    self.a_multiscale_aux_ordinal_score(expert_exam)
+                    + self.a_multiscale_aux_ordinal_bias
+                ),
+                "multiscale_aux_binary_logits": (
+                    self.a_multiscale_aux_binary_head(expert_exam)
+                ),
+            })
         if view_summaries is not None:
             outputs["view_logits"] = self.view_aux_head(view_summaries)
         return outputs
