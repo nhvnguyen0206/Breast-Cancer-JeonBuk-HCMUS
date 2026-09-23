@@ -62,6 +62,7 @@ and streak, epochs at/above `.72`, and the expert output-projection norm. These
 are selected DEV estimates, not an independent test. Final CV5 acceptance
 remains mean Macro-F1 >= `.72`, sample SD <= `.03`, and minimum fold >= `.65`.
 
-Status: preregistered and validation-complete. Atlas hashes/tests, CUDA parity
-job `1088` and real-cache RTX5090 preflight job `1089` all PASS. The fold2/3
-screen is unlocked; folds0/1/4 remain locked until every two-fold gate passes.
+Status: completed and rejected after audit jobs `1092/1093` both PASS. Fold2
+Macro, sample SD, B/C/D mean/minimum and QWK mean gates fail. Folds0/1/4 remain
+permanently locked for A52. See
+`vindr_a52_multiscale_a_expert_twofold_final_20260923.md`.

@@ -66,5 +66,6 @@ above `.72`. These are selected DEV estimates, not independent test results.
 Final CV5 acceptance remains mean Macro-F1 >= `.72`, sample SD <= `.03`, and
 minimum fold >= `.65`.
 
-Status: conditionally preregistered; implementation may be prepared locally,
-but Atlas deployment/training remains locked behind audited A52 rejection.
+Status: preregistered and locally validated. Audited A52 rejection satisfies
+the dependency, so Atlas hash/tests, CUDA parity and real-cache RTX5090
+preflight are unlocked. Training remains locked until every validation passes.

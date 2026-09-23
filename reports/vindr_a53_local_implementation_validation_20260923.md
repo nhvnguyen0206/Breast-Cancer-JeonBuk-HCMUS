@@ -38,5 +38,5 @@ normalized four-class output and is not an ensemble.
 - config: `9b23cd6e7099839ad0b4cedb2e67c9b127c3c1d135d4ee1b40b62d612c7a18c2`
 - tests: `3b5dcbac9d03a26d582e3945d9dc2094fc46e9ef894e5a527402bcf71d74f042`
 
-Atlas deployment, CUDA parity, real-cache preflight and training remain locked
-until A52 completes, both registered audits pass, and A52 is rejected.
+Audited A52 rejection now unlocks Atlas deployment, CUDA parity and real-cache
+RTX5090 preflight. Training remains locked until those checks pass.

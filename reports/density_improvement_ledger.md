@@ -4576,3 +4576,11 @@ after first20. The learned residual expert does not repair the weak fold.
 Finish50 and audits1092/1093; folds0/1/4 remain locked. A53 was preregistered
 before this inspection. Exact report:
 vindr_a52_multiscale_a_expert_first40_20260923.md.
+
+A52 folds2/3 complete50 and audits1092/1093 both PASS. Final selected epochs
+7/19 remain Macro .6034620/.7305408, mean .6670014, sampleSD .0898583 and
+minimum .6034620. Fold2 Macro, SD, B/C/D mean/min and QWK mean gates fail;
+reject without folds0/1/4. The residual expert trains but reinforces fold3 and
+does not repair fold2. Audited rejection unlocks A53 Atlas/CUDA/preflight
+validation, not training. Exact report:
+vindr_a52_multiscale_a_expert_twofold_final_20260923.md.
